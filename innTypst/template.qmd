@@ -1,0 +1,140 @@
+---
+title: An University of Inland Norway Typst template for Quarto
+typst-logo:
+  path: "logo-eng.png"
+course: "Course code"
+course-link: "https://www.inn.no"
+page-numbering: "none"  # Options: "1", "I", "i", "a", "A", or "none" to disable
+margin-notes:
+  - title: "Tutor"
+    position: 20
+    content: "[Professor Adams](mailto:prof.adams@inn.no)"
+  - title: "A definition"
+    position: 10
+    content: "Some text that is defining a concept"
+  - title: "Reference"
+    position: 15
+    content: "See Smith (2023) for further reading."
+format:
+  innTypst-typst: default
+  # This is to disable Quarto's default bibliography behavior
+bibliography: bibliography.bib
+bibliographystyle: "apa"
+reference-section-title: false  # This disables Quarto's automatic bibliography heading
+bibliography-heading: "References"  # Custom heading for bibliography
+crossref:
+  fig-title: Figure    # (default is "Figure")
+  tbl-title: Table     # (default is "Table")
+  title-delim: ":"     # (default is ":")
+---
+
+
+## Introduction 
+
+This is a simple Quarto/Typst template to match styles of the University of Inland Norway. This template file contains instructions on how to use the extension.
+
+Typst is an [open source typsetting system](https://typst.app) used by [Quarto](https://quarto.org/), an open-source publishing system to render PDF's from markdown-based source files. Quarto lets you combine prose, data and computer code to write technical documents. 
+
+## Fonts
+
+Aptos, the Microsoft font recommended by INN may no be available for Typst when it builds a PDF. To check if you have the font installed, open a terminal and type:
+
+```bash
+quarto typst fonts
+
+```
+
+If you do not find Aptos, Aptos Display, Aptos Mono etc. download the font from [Microsoft](https://www.microsoft.com/en-us/download/details.aspx?id=106087), select all `tff`-files, right-click and select Install. Check again (`quarto typst fonts`) if you have installed the fonts.
+
+## Logotypes
+
+There are two main alternatives for logotypes in the upper right corner, `logo-eng.png` and `logo-nor.png`. These are included in the extension folder. Change the file name to switch between the English and Norwegian logotype.
+
+## Margin notes and course name
+
+Margin notes can be specified in the YAML field and will display on the first page of a multipage document. These can include links and other simple markdown formatting.
+
+The course name (and web address) has a fixed position as part of the footer. Use the YAML field to modify the content of this key. 
+
+Additional margin notes has not been implemented.
+
+
+## Citations
+
+Citations should work [@teigen2013]. The built in system for references defaults to "ieee" but can be changed using the `bibligraphystyle` option in the YAML field. See [here for more information](https://quarto.org/docs/output-formats/typst.html#bibliography). The bibliography heading has been made user-defined using the `bibliography-heading` key in YAML. 
+
+## Tables and figures created with R
+
+Figures from data can be included, and we can cross reference them. To change the title of the cross reference, adjust under crossref in the YAML field. See @fig-inn for an example of R-created output.
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: fig-inn
+#| fig-cap: "This is a figure created with R"
+
+library(tidyverse)
+library(palmerpenguins)
+
+palmerpenguins::penguins |> 
+  ggplot(aes(bill_length_mm, flipper_length_mm, color = island)) + geom_point()
+
+
+
+
+```
+
+
+We can also include figures like @fig-sample in our documents.
+
+
+
+![This is a sample caption for the figure. National Library of Norway, Public domain, via Wikimedia Commons](faaberg.jpg){#fig-sample}
+
+Tables can alos be created from data using R, see @tbl-example.
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: tbl-example
+#| tbl-cap: "This is a table created with R"
+
+library(tidyverse)
+library(palmerpenguins)
+library(gt)
+
+palmerpenguins::penguins |> 
+  summarise(.by = island, 
+            Mean = mean(bill_length_mm), 
+            SD = sd(bill_length_mm)) |> 
+    gt() 
+  
+
+
+
+
+```
+
+
+## Longer documents
+
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
