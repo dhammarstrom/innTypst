@@ -1,6 +1,6 @@
-title: InnTypst
+title: INN Handout
 author: Daniel Hammarström
-version: 0.1.0
+version: 0.1.1
 quarto-required: ">=1.6.0"
 contributes:
   formats:
@@ -8,8 +8,9 @@ contributes:
       template-partials:
         - typst-template.typ
         - typst-show.typ
+        - page.typ
       filters:
-        - innTypst.lua
+        - innHandout.lua
       format-resources:
         - logo-eng.png
         - logo-nor.png

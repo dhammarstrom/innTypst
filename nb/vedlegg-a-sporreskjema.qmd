@@ -1,0 +1,18 @@
+# Spørreskjema ved oppstart
+
+Spørreskjemaet som ble brukt ved første besøk.
+
+## Del 1: bakgrunn
+
+1. Fødselsår
+2. Høyeste fullførte utdanning
+3. Bosituasjon
+
+## Del 2: vanlig aktivitet
+
+| Spørsmål | Svaralternativer |
+|:---|:---|
+| Dager per uke med ≥30 min aktivitet | 0–7 |
+| Vanlig intensitet | Lett / moderat / hard |
+
+: Aktivitetsspørsmål. {#tbl-vedlegg-aktivitet}

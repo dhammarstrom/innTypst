@@ -1,0 +1,20 @@
+# Baseline questionnaire
+
+The questionnaire administered at the baseline visit.
+
+## Section 1: background
+
+1. Year of birth
+2. Highest completed education
+3. Current living situation
+
+## Section 2: habitual activity
+
+| Item | Response options |
+|:---|:---|
+| Days per week with ≥30 min activity | 0–7 |
+| Usual intensity | Light / moderate / vigorous |
+
+: Habitual activity items. {#tbl-app-activity}
+
+See @tbl-app-activity for the activity items.

@@ -1,8 +1,33 @@
+# Quarto / Typst build output
+_book/
+.quarto/
+*.typ
+*.pdf
+handout/handout_files/
+
+# ... but the extensions themselves are source. The `**/` prefix matters: a
+# pattern containing a slash is anchored to this file's directory, so plain
+# `_extensions/**` would miss handout/_extensions/**.
+!**/_extensions/**/*.typ
+!**/_extensions/**/*.pdf
+
+# Logos copied next to the document by `format-resources` on every render
+/inn-logo-en.png
+/inn-logo-nb.png
+/inn-logo-nn.png
+/handout/logo-eng.png
+/handout/logo-nor.png
+
+# R / RStudio
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-nul
 *.Rproj
-template.pdf
-logo.png
+
+# Windows
+nul
+Thumbs.db
+
+/.quarto/
+**/*.quarto_ipynb

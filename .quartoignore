@@ -1,5 +1,20 @@
-template.typ
-template.pdf
+# Files excluded when this repository is used as a Quarto template
+# (`quarto use template dhammarstrom/innTypst`).
 LICENSE.md
 NEWS.md
-PrettyTypst.Rproj
+.Rproj.user
+*.Rproj
+_book/
+.quarto/
+
+# The handout is a template in its own right
+# (`quarto use template dhammarstrom/innTypst/handout`), so it is not part of
+# what the thesis template delivers.
+handout/
+
+# Copies made next to the document by `format-resources` on every render.
+# These do not reach the installed extension: .quartoignore governs the
+# template files only, not the _extensions payload.
+inn-logo-en.png
+inn-logo-nb.png
+inn-logo-nn.png

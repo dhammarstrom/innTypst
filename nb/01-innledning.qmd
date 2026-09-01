@@ -1,0 +1,16 @@
+# Innledning {#sec-innledning}
+
+Fysisk inaktivitet er en av de viktigste påvirkbare risikofaktorene for
+ikke-smittsomme sykdommer [@bauman2012]. En stor andel av den voksne
+befolkningen oppfyller likevel ikke gjeldende anbefalinger [@garber2011].
+
+## Formål
+
+Oppgaven undersøker om et veiledet treningsprogram over 12 uker bedrer
+kondisjonen hos eldre voksne, og om responsen varierer med utgangsnivå.
+
+## Problemstillinger
+
+1. Øker veiledet trening maksimalt oksygenopptak sammenlignet med vanlig oppfølging?
+2. Modereres treningsresponsen av kondisjon ved oppstart?
+3. Følges endringer i kondisjon av endringer i kardiometabolske markører?

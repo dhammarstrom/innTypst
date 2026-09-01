@@ -1,0 +1,32 @@
+# Results {#sec-results}
+
+## Participant characteristics
+
+Baseline characteristics were balanced between groups (@tbl-baseline).
+
+| Characteristic | Intervention (n = 31) | Control (n = 31) |
+|:---|---:|---:|
+| Age (years) | 71.2 (4.1) | 70.8 (4.4) |
+| Women, n (%) | 17 (55) | 16 (52) |
+| BMI (kg/m²) | 26.4 (3.2) | 26.9 (3.6) |
+| V̇O~2peak~ (mL·kg⁻¹·min⁻¹) | 24.1 (4.8) | 24.6 (5.1) |
+
+: Baseline characteristics. Values are mean (SD) unless stated otherwise. {#tbl-baseline}
+
+## Primary outcome
+
+Peak oxygen uptake increased by 2.4 mL·kg⁻¹·min⁻¹ (95% CI 1.6 to 3.2) in the
+intervention group relative to control.
+
+## Secondary outcomes
+
+Changes in cardiometabolic markers were small and are summarised in
+@tbl-secondary.
+
+| Outcome | Difference (95% CI) |
+|:---|:---|
+| Systolic blood pressure (mmHg) | −3.1 (−6.4 to 0.2) |
+| Fasting glucose (mmol/L) | −0.09 (−0.24 to 0.06) |
+| Waist circumference (cm) | −1.4 (−2.8 to −0.1) |
+
+: Between-group differences in secondary outcomes at week 12. {#tbl-secondary}

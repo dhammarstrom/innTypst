@@ -1,0 +1,23 @@
+# Resultater og diskusjon {#sec-resultater}
+
+## Deltakerkarakteristika
+
+Karakteristika ved oppstart var balanserte mellom gruppene (@tbl-utgangspunkt).
+
+| Karakteristikk | Intervensjon (n = 31) | Kontroll (n = 31) |
+|:---|---:|---:|
+| Alder (år) | 71,2 (4,1) | 70,8 (4,4) |
+| Kvinner, n (%) | 17 (55) | 16 (52) |
+| KMI (kg/m²) | 26,4 (3,2) | 26,9 (3,6) |
+
+: Karakteristika ved oppstart. Verdiene er gjennomsnitt (SD) der annet ikke er oppgitt. {#tbl-utgangspunkt}
+
+## Primærutfall
+
+Maksimalt oksygenopptak økte med 2,4 mL·kg⁻¹·min⁻¹ (95 % KI 1,6 til 3,2) i
+intervensjonsgruppen sammenlignet med kontrollgruppen.
+
+## Konklusjon
+
+Et veiledet program over 12 uker ga klinisk relevante forbedringer i kondisjon
+hos hjemmeboende eldre voksne.

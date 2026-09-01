@@ -1,0 +1,19 @@
+# Metode {#sec-metode}
+
+## Design
+
+En toarmet randomisert kontrollert studie med parallelle grupper.
+
+## Deltakere
+
+Sekstito hjemmeboende voksne i alderen 65–79 år ble rekruttert fra Elverum- og
+Hamar-området.
+
+![Faaberg, nær et av rekrutteringsområdene. Nasjonalbiblioteket, offentlig eiendom, via Wikimedia Commons.](../images/faaberg.jpg){#fig-sted width=70%}
+
+@fig-sted viser et av rekrutteringsområdene.
+
+## Statistisk analyse
+
+Gruppeforskjeller ble estimert med en lineær blandet modell. Effektstørrelser
+rapporteres som standardiserte gjennomsnittsforskjeller [@cohen1988].

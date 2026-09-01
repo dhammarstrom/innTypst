@@ -1,4 +1,4 @@
--- captions.lua
+-- innHandout.lua
 -- Combined filter to handle both figure and table captions in Typst
 
 -- Handle image captions (figures)

@@ -1,0 +1,24 @@
+# Discussion {#sec-discussion}
+
+## Main findings
+
+Twelve weeks of supervised training improved cardiorespiratory fitness by an
+amount that exceeds the smallest difference generally considered clinically
+relevant.
+
+## Comparison with previous work
+
+The magnitude of the effect is consistent with earlier trials in younger
+populations [@garber2011], suggesting that trainability is preserved into the
+eighth decade.
+
+## Strengths and limitations
+
+Supervision meant the delivered dose was known, which is unusual in this
+literature. The trial was, however, single-centre and not blinded to
+participants.
+
+## Conclusion
+
+A supervised 12-week programme produced clinically relevant improvements in
+cardiorespiratory fitness in community-dwelling older adults.

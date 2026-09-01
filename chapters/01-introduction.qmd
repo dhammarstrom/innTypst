@@ -1,0 +1,24 @@
+# Introduction
+
+Physical inactivity is one of the leading modifiable risk factors for
+non-communicable disease [@bauman2012]. Despite consistent public health
+messaging, a large share of the adult population does not meet current activity
+recommendations [@garber2011].
+
+## Aim of the thesis
+
+This thesis examines whether a supervised 12-week training programme improves
+cardiorespiratory fitness in older adults, and whether the response differs by
+baseline fitness.
+
+## Research questions
+
+1. Does supervised training increase peak oxygen uptake relative to usual care?
+2. Is the training response modified by baseline fitness?
+3. Are changes in fitness accompanied by changes in cardiometabolic markers?
+
+## Structure of the thesis
+
+@sec-background reviews the literature. @sec-methods describes the design and
+the statistical approach. Results follow in @sec-results, and @sec-discussion
+places them in context.

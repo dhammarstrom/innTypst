@@ -1,0 +1,5 @@
+# Marks this folder as a Quarto project of its own, so the handout can be
+# rendered from inside the innTypst repository (whose root is a book project).
+# You can delete this file once the handout lives in a folder of its own.
+project:
+  type: default

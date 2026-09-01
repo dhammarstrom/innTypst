@@ -1,0 +1,9 @@
+# Abbreviations {.unnumbered}
+
+| Abbreviation | Meaning |
+|:---|:---|
+| BMI | Body mass index |
+| CI | Confidence interval |
+| HR~max~ | Maximal heart rate |
+| RCT | Randomised controlled trial |
+| V̇O~2peak~ | Peak oxygen uptake |

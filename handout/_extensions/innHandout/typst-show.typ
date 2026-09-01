@@ -1,4 +1,4 @@
-#show: innTypst.with(
+#show: inn-handout.with(
 $if(title)$
   title: "$title$",
 $endif$

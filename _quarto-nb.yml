@@ -1,0 +1,90 @@
+# =============================================================================
+#  Norwegian (bokmål) starting point.
+#
+#  This is a complete, self-contained project configuration. To write your
+#  thesis in Norwegian, swap it in for the English one:
+#
+#      mv _quarto-nb.yml _quarto.yml
+#      mv nb/sammendrag.qmd index.qmd
+#
+#  (Quarto requires the first chapter of a book to be index.qmd in the project
+#  root, so the first front-matter page always lives there.) The remaining
+#  chapter files are under nb/ instead of chapters/ and frontmatter/.
+#
+#  The only thing that switches the built-in labels (Innhold, Kapittel,
+#  Figurliste, Vedlegg, Referanser ...), the hyphenation and the logo is
+#  `lang: nb`. For nynorsk use `lang: nn`.
+# =============================================================================
+
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Fysisk aktivitet og kardiometabolsk helse"
+  subtitle: "En studie av treningsrespons hos eldre voksne"
+  author: "Ola Nordmann"
+  date: "2026-05-15"
+  date-format: "MMMM YYYY"
+  output-file: "masteroppgave"
+
+  # ---- Innledende deler (romertall, uten kapittelnummer) --------------------
+  chapters:
+    - index.qmd                        # Sammendrag (må ligge i prosjektroten)
+    - nb/forord.qmd
+
+    # ---- Hoveddel (sidetallene starter på nytt fra 1) ---------------------
+    - nb/01-innledning.qmd
+    - nb/02-metode.qmd
+    - nb/03-resultater-og-diskusjon.qmd
+
+    # ---- Avsluttende deler -------------------------------------------------
+    - nb/referanser.qmd
+
+  appendices:
+    - nb/vedlegg-a-sporreskjema.qmd
+
+lang: nb
+
+# Quarto's Norwegian translation calls the appendix divider "Bilag"; most INN
+# theses say "Vedlegg". Any of Quarto's built-in strings can be overridden here.
+language:
+  section-title-appendices: "Vedlegg"
+
+thesis:
+  type: master
+  degree: "Master i folkehelsevitenskap"
+  credits: "60"
+  faculty: "Fakultet for helse- og sosialvitenskap"
+  department: "Institutt for folkehelse- og idrettsvitenskap"
+  programme: "Masterprogram i folkehelsevitenskap"
+  place: "Elverum"
+  year: "2026"
+
+  supervisors:
+    - name: "Professor Kari Nordmann"
+      role: "Hovedveileder"
+      affiliation: "Universitetet i Innlandet"
+    - name: "Førsteamanuensis Erik Hansen"
+      role: "Biveileder"
+      affiliation: "Norges idrettshøgskole"
+
+  two-sided: true
+  open-right: true
+  running-head: true
+  toc-position: before-chapters
+
+bibliography: references.bib
+bibliographystyle: apa
+
+crossref:
+  chapters: true
+
+format:
+  innThesis-typst:
+    toc: true
+    toc-depth: 3
+    lof: true
+    lot: true
+    fontsize: 11pt
+    linestretch: 1.4

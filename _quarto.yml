@@ -1,0 +1,129 @@
+project:
+  type: book
+  output-dir: _book
+
+# =============================================================================
+#  Everything an author normally edits lives in this file.
+#
+#  `book:` controls the structure - which files are front matter, chapters and
+#  appendices, and in which order. `thesis:` controls the title page, the
+#  colophon and the localised labels.
+# =============================================================================
+
+book:
+  title: "Physical activity and cardiometabolic health"
+  subtitle: "A study of training responses in older adults"
+  author: "Ola Nordmann"
+  date: "2026-05-15"
+  date-format: "MMMM YYYY"
+
+  # ---- Front matter --------------------------------------------------------
+  # Anything listed before the first numbered chapter is front matter: it gets
+  # roman page numbers (i, ii, iii) and no chapter number. Mark these files
+  # `{.unnumbered}` on their level-1 heading.
+  #
+  # The table of contents (plus list of figures / tables / papers, if enabled)
+  # is inserted automatically at the end of the front matter. Move it with
+  # `thesis.toc-position` below.
+  chapters:
+    - index.qmd                        # Abstract
+    - frontmatter/sammendrag.qmd       # Norwegian summary
+    - frontmatter/acknowledgements.qmd
+    - frontmatter/abbreviations.qmd
+
+    # ---- Main matter -------------------------------------------------------
+    # Numbered chapters. Page numbering restarts at 1 here.
+    - chapters/01-introduction.qmd
+    - chapters/02-background.qmd
+    - chapters/03-methods.qmd
+    - chapters/04-results.qmd
+    - chapters/05-discussion.qmd
+
+    # ---- Back matter -------------------------------------------------------
+    - references.qmd
+
+  # Appendices are numbered A, B, C ... and their figures and tables follow
+  # (A.1, A.2, ...).
+  appendices:
+    - appendices/a-questionnaire.qmd
+    - appendices/b-ethics.qmd
+
+# -----------------------------------------------------------------------------
+#  Language: en (English), nb (bokmål) or nn (nynorsk). This drives the built-in
+#  labels (Contents / Innhold / Innhald, Chapter / Kapittel, ...), hyphenation
+#  and which INN logo is used on the title page.
+# -----------------------------------------------------------------------------
+lang: en
+
+thesis:
+  # master | phd | phd-articles
+  type: master
+
+  degree: "Master of Science in Public Health"
+  credits: "60"
+  faculty: "Faculty of Health and Social Sciences"
+  department: "Department of Public Health and Sport Sciences"
+  programme: "Master's Programme in Public Health"
+  place: "Elverum"
+  year: "2026"
+
+  supervisors:
+    - name: "Professor Kari Nordmann"
+      role: "Main supervisor"
+      affiliation: "University of Inland Norway"
+    - name: "Associate Professor Erik Hansen"
+      role: "Co-supervisor"
+      affiliation: "Norwegian School of Sport Sciences"
+
+  # ---- Layout --------------------------------------------------------------
+  # two-sided: true prints with mirrored margins and chapters opening on a
+  # right-hand page. Set to false for a one-sided PDF.
+  two-sided: true
+  open-right: true
+  running-head: true
+
+  # Where the table of contents goes: before-chapters (default, i.e. at the end
+  # of the front matter), after-title, or none.
+  toc-position: before-chapters
+
+  # ---- Title page extras ---------------------------------------------------
+  # logo: en | nb | nn | path/to/your-logo.png   (defaults to the language)
+  # statement: "..."          overrides the "Master's thesis — 60 credits" line
+  # dedication: "For ..."
+  # institution: "..."        overrides the default INN name for the language
+
+  # ---- PhD only ------------------------------------------------------------
+  # colophon: true            (on by default for PhD theses)
+  # series: "Doctoral dissertations at the University of Inland Norway"
+  # series-number: "42"
+  # isbn-printed: "978-82-XXXX-XXX-X"
+  # isbn-digital: "978-82-XXXX-XXX-X"
+  # issn-printed: "2535-XXXX"
+  # issn-digital: "2535-XXXX"
+  # printed-by: "Flisa Trykkeri A/S"
+  #
+  # For an article-based dissertation (type: phd-articles) list the papers and
+  # a "List of Papers" page is generated:
+  # papers:
+  #   - label: "I"
+  #     authors: "Nordmann, O., & Nordmann, K."
+  #     year: "2025"
+  #     title: "Training responses in older adults"
+  #     journal: "Scandinavian Journal of Medicine & Science in Sports, 35(2), 101–110"
+  #     status: "Published"
+  #     doi: "10.1111/sms.00000"
+
+bibliography: references.bib
+bibliographystyle: apa
+
+crossref:
+  chapters: true
+
+format:
+  innThesis-typst:
+    toc: true
+    toc-depth: 3
+    lof: true
+    lot: true
+    fontsize: 11pt
+    linestretch: 1.4

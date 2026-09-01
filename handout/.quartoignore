@@ -1,0 +1,8 @@
+# Files excluded when handout/ is used as a Quarto template
+# (`quarto use template dhammarstrom/innTypst/handout`).
+handout_files/
+logo-eng.png
+logo-nor.png
+handout.pdf
+handout.typ
+.quarto/

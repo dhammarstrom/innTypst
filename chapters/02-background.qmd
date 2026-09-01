@@ -1,0 +1,59 @@
+# Background {#sec-background}
+
+## Physical activity and health
+
+The relationship between activity volume and health outcomes is generally
+curvilinear: the largest relative gains occur when the least active become
+moderately active [@bauman2012]. Beyond a certain volume the curve flattens,
+so the public health argument for reaching *some* activity is stronger than
+the argument for reaching a lot.
+
+Observational studies consistently report lower all-cause mortality among
+active adults, but they are vulnerable to reverse causation: people who are
+already unwell move less. Randomised trials avoid that problem at the cost of
+shorter follow-up and smaller samples.
+
+## Training responses in older adults
+
+Ageing is accompanied by a decline in maximal oxygen uptake of roughly 10% per
+decade after the age of 30. Supervised endurance training can offset part of
+this decline, and the relative improvement in older adults is comparable to
+that seen in younger populations, even if the absolute values remain lower
+[@garber2011].
+
+Three mechanisms are usually invoked. Central adaptations increase stroke
+volume and cardiac output. Peripheral adaptations increase capillary density
+and mitochondrial content in the trained muscle. Behavioural adaptations —
+simply moving more outside the sessions — contribute an amount that is rarely
+measured.
+
+### Individual variation
+
+Responses to a fixed training dose vary substantially between individuals.
+This variation is partly measurement error and partly genuine biological
+heterogeneity, and separating the two requires either repeated baseline
+measurements or a control group followed over the same period.
+
+Studies that have done so suggest that true non-response to endurance training
+is rare once the delivered dose is verified. Apparent non-response is more
+often a matter of adherence than of biology.
+
+### Dose and adherence
+
+Supervision matters because it makes the delivered dose knowable. In
+unsupervised programmes, the difference between the prescribed and the
+completed dose is frequently the largest single source of variation in the
+outcome.
+
+## Cardiometabolic outcomes
+
+Changes in blood pressure, fasting glucose and waist circumference following
+endurance training are typically small in absolute terms. They are, however,
+consistent in direction, and at a population level even a 2–3 mmHg reduction in
+systolic blood pressure is meaningful.
+
+## Summary
+
+The literature supports a benefit of structured training, but few studies have
+followed community-dwelling older adults under supervision for a full 12 weeks
+while also verifying the delivered dose. That gap motivates the present work.

@@ -1,6 +1,6 @@
-#let innTypst(
+#let inn-handout(
   // The document title.
-  title: "innTypst",
+  title: "INN handout",
   // Logo in top right corner.
   typst-logo: none,
   // Course name and link
