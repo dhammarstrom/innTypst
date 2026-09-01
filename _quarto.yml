@@ -59,12 +59,12 @@ thesis:
   # master | phd | phd-articles
   type: master
 
-  degree: "Master of Science in Public Health"
-  credits: "60"
+  degree: "Master in Exercise Physiology"
+  credits: "30"
   faculty: "Faculty of Health and Social Sciences"
   department: "Department of Public Health and Sport Sciences"
-  programme: "Master's Programme in Public Health"
-  place: "Elverum"
+  programme: "Master's Programme in Exercise Physiology"
+  place: "Lillehammer"
   year: "2026"
 
   supervisors:
@@ -88,7 +88,7 @@ thesis:
 
   # ---- Title page extras ---------------------------------------------------
   # logo: en | nb | nn | path/to/your-logo.png   (defaults to the language)
-  # statement: "..."          overrides the "Master's thesis — 60 credits" line
+  # statement: "..."          overrides the "Master's thesis — 30 credits" line
   # dedication: "For ..."
   # institution: "..."        overrides the default INN name for the language
 

@@ -53,12 +53,12 @@ language:
 
 thesis:
   type: master
-  degree: "Master i folkehelsevitenskap"
-  credits: "60"
+  degree: "Master i treningsfysiologi"
+  credits: "30"
   faculty: "Fakultet for helse- og sosialvitenskap"
   department: "Institutt for folkehelse- og idrettsvitenskap"
-  programme: "Masterprogram i folkehelsevitenskap"
-  place: "Elverum"
+  programme: "Masterprogram i treningsfysiologi"
+  place: "Lillehammer"
   year: "2026"
 
   supervisors:

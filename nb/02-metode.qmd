@@ -6,8 +6,8 @@ En toarmet randomisert kontrollert studie med parallelle grupper.
 
 ## Deltakere
 
-Sekstito hjemmeboende voksne i alderen 65–79 år ble rekruttert fra Elverum- og
-Hamar-området.
+Sekstito hjemmeboende voksne i alderen 65–79 år ble rekruttert fra Lillehammer- og
+Gjøvik-området.
 
 ![Faaberg, nær et av rekrutteringsområdene. Nasjonalbiblioteket, offentlig eiendom, via Wikimedia Commons.](../images/faaberg.jpg){#fig-sted width=70%}
 

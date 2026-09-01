@@ -7,7 +7,7 @@ A two-arm parallel-group randomised controlled trial.
 ## Participants
 
 Sixty-two community-dwelling adults aged 65–79 years were recruited from the
-Elverum and Hamar areas.
+Lillehammer and Gjøvik areas.
 
 ![Faaberg church, near one of the recruitment sites. National Library of Norway, public domain, via Wikimedia Commons.](../images/faaberg.jpg){#fig-site width=70%}
 

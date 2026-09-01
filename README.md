@@ -113,12 +113,12 @@ All of it is optional; anything you leave out is left off the title page.
 ```yaml
 thesis:
   type: master              # master | phd | phd-articles
-  degree: "Master of Science in Public Health"
-  credits: "60"
+  degree: "Master in Exercise Physiology"
+  credits: "30"
   faculty: "Faculty of Health and Social Sciences"
   department: "Department of Public Health and Sport Sciences"
-  programme: "Master's Programme in Public Health"
-  place: "Elverum"
+  programme: "Master's Programme in Exercise Physiology"
+  place: "Lillehammer"
   year: "2026"
 
   supervisors:
@@ -134,7 +134,7 @@ thesis:
 
   # Title page
   logo: en                  # en | nb | nn | path/to/logo.png
-  statement: "..."          # replaces the "Master's thesis — 60 credits" line
+  statement: "..."          # replaces the "Master's thesis — 30 credits" line
   institution: "..."        # replaces the default INN name for the language
   dedication: "For ..."
   heading-font: "Aptos Display"
