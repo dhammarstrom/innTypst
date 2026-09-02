@@ -290,7 +290,8 @@ entries into part pages, marks the front-matter/main-matter boundary, starts the
 appendices, and relocates the bibliography to the `#refs` div.
 
 The thesis format requires Quarto ≥ 1.9.17 (Typst book support); the handout
-requires ≥ 1.6.0.
+requires ≥ 1.6.0. Both are tested against Quarto 1.9.27 (Typst 0.14) and
+Quarto 1.10.18 (Typst 0.15).
 
 ## Licence
 

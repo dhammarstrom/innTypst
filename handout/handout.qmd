@@ -121,7 +121,11 @@ ToothGrowth |>
             Mean = mean(len),
             SD = sd(len)) |>
   arrange(supp, dose) |>
-  gt()
+  gt() |>
+  # gt's default font stack ends in the CSS keyword `sans-serif`, which Quarto
+  # passes through to Typst as a font name; Typst 0.15 (Quarto 1.10) warns
+  # about it. Naming the document font here also keeps the table in Aptos.
+  tab_options(table.font.names = c("Aptos", "Segoe UI", "Calibri"))
 ```
 
 ## Longer documents

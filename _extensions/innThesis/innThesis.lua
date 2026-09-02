@@ -15,8 +15,50 @@
 --
 -- It also rewrites boolean values under `thesis:` to strings, because a Pandoc
 -- template cannot tell `false` from "not set".
+--
+-- The filter runs `at: post-quarto`, where the metadata Quarto hands to Lua has
+-- already been rendered to the target format. Read metadata with `meta_string()`
+-- rather than `pandoc.utils.stringify()`: see the note on that function.
 
 local stringify = pandoc.utils.stringify
+
+-- Read a metadata value as plain text.
+--
+-- As of Quarto 1.10 the rendered metadata a `post-quarto` filter sees carries
+-- plain values as raw nodes for the target format: `bibliography: references.bib`
+-- arrives as `RawInline("typst", "references.bib")` where it used to arrive as
+-- `Str "references.bib"`. `pandoc.utils.stringify()` renders raw content as the
+-- empty string, so on its own it silently loses such values -- which is how the
+-- bibliography path went missing and Typst was asked to load `""`. Fall back to
+-- collecting the raw text when stringify comes up empty.
+local function meta_string(value)
+  if value == nil then
+    return ""
+  end
+  if type(value) ~= "table" then
+    return tostring(value)
+  end
+  local text = stringify(value)
+  if text ~= "" then
+    return text
+  end
+  local parts = {}
+  local grab = {
+    RawInline = function(el) parts[#parts + 1] = el.text end,
+    RawBlock = function(el) parts[#parts + 1] = el.text end,
+  }
+  if not pcall(function() pandoc.Inlines(value):walk(grab) end) then
+    pcall(function() pandoc.Blocks(value):walk(grab) end)
+  end
+  return table.concat(parts)
+end
+
+-- A metadata value that holds several entries: a Pandoc `MetaList` in Quarto
+-- 1.9 and earlier, a plain Lua/Pandoc `List` since 1.10.
+local function is_meta_list(value)
+  return type(value) == "table"
+    and (value.t == "MetaList" or pandoc.utils.type(value) == "List")
+end
 
 -- Options read from metadata, filled in by the first pass.
 local opts = {
@@ -104,7 +146,7 @@ local function read_meta(meta)
       end
     end
     if thesis["toc-position"] ~= nil then
-      opts.toc_position = stringify(thesis["toc-position"])
+      opts.toc_position = meta_string(thesis["toc-position"])
     end
     meta.thesis = thesis
   end
@@ -112,18 +154,27 @@ local function read_meta(meta)
   -- Where to find the bibliography, and in which style.
   local bib = meta.bibliography
   if bib ~= nil then
-    if bib.t == "MetaList" then
+    if is_meta_list(bib) then
       for _, entry in ipairs(bib) do
-        opts.bibliography[#opts.bibliography + 1] = stringify(entry)
+        local path = meta_string(entry)
+        if path ~= "" then
+          opts.bibliography[#opts.bibliography + 1] = path
+        end
       end
     else
-      opts.bibliography[1] = stringify(bib)
+      local path = meta_string(bib)
+      if path ~= "" then
+        opts.bibliography[1] = path
+      end
     end
   end
   if meta.csl ~= nil then
-    opts.bib_style = stringify(meta.csl)
+    opts.bib_style = meta_string(meta.csl)
   elseif meta.bibliographystyle ~= nil then
-    opts.bib_style = stringify(meta.bibliographystyle)
+    opts.bib_style = meta_string(meta.bibliographystyle)
+  end
+  if opts.bib_style == "" then
+    opts.bib_style = nil
   end
 
   return meta
@@ -156,7 +207,7 @@ local structure = {
     -- The synthetic divider that Quarto inserts before `appendices:`.
     if item_type == "appendix" and not appendices_started then
       appendices_started = true
-      local title = stringify(el.content)
+      local title = meta_string(el.content)
       if title == "" then
         title = "Appendices"
       end
