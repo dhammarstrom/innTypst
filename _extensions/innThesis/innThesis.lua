@@ -196,6 +196,8 @@ end
 --   .inn-next-page    open on the next page, whichever side it is, instead of
 --                     on a right-hand page. The university wants the second
 --                     summary on page ii, straight after the first.
+--   .inn-center       centre the heading, as the university's article-based
+--                     template does with "Dissertation articles".
 local function book_structure(el)
   local state = quarto.doc.file_metadata()
   local file = state and state.file
@@ -255,21 +257,28 @@ local structure = {
 
     local result = book_structure(el)
 
+    -- Flags the template reads when it lays out the next level-1 heading.
+    local blocks = {}
     if el.classes:includes("inn-next-page") then
-      local blocks = { raw('#inn-next-opener.update("any")') }
-      if result == nil then
-        blocks[#blocks + 1] = el
-      elseif result.t ~= nil then
-        blocks[#blocks + 1] = result
-      else
-        for _, b in ipairs(result) do
-          blocks[#blocks + 1] = b
-        end
-      end
-      return blocks
+      blocks[#blocks + 1] = raw('#inn-next-opener.update("any")')
+    end
+    if el.classes:includes("inn-center") then
+      blocks[#blocks + 1] = raw('#inn-next-align.update("center")')
+    end
+    if #blocks == 0 then
+      return result
     end
 
-    return result
+    if result == nil then
+      blocks[#blocks + 1] = el
+    elseif result.t ~= nil then
+      blocks[#blocks + 1] = result
+    else
+      for _, b in ipairs(result) do
+        blocks[#blocks + 1] = b
+      end
+    end
+    return blocks
   end,
 
   -- Placeholder divs that the author puts in a chapter file:

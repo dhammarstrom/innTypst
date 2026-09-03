@@ -1,4 +1,4 @@
-# Dissertation articles {.unnumbered}
+# Dissertation articles {.unnumbered .inn-center}
 
 <!--
 The `#inn-papers` div below produces one numbered separator sheet per entry in

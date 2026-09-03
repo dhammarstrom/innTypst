@@ -8,6 +8,8 @@
 // =============================================================================
 
 // ----------------------------------------------------------------- palette --
+// The green is the accent of a master's thesis. A PhD dissertation is black
+// throughout, as the university's Word templates are (see `accent` below).
 #let inn-green = rgb("#003F01") // INN dark green (headings, rules, links)
 #let inn-green-mid = rgb("#0F5122") // logo green
 #let inn-green-pale = rgb("#E9F5E7") // tint for part pages / callouts
@@ -128,6 +130,10 @@
 // innThesis.lua for headings carrying the `.inn-next-page` class, e.g. the
 // second summary, which the university wants on page ii.
 #let inn-next-opener = state("inn-next-opener", "auto")
+// "auto": the next level-1 heading is set flush left; "center": centred. Set
+// by innThesis.lua for headings carrying the `.inn-center` class, e.g. the
+// "Dissertation articles" heading, which the university's template centres.
+#let inn-next-align = state("inn-next-align", "auto")
 
 // Look up a label, honouring user overrides in `thesis.labels`.
 #let inn-t-str(cfg, key) = {
@@ -346,7 +352,11 @@
 // they can be filled in once the numbers have been assigned. The university
 // asks that this page is never removed.
 #let inn-colophon(cfg) = {
-  set par(justify: false, leading: 0.8em, spacing: 0.8em)
+  // The "Kolofon" style of the templates: 11 pt, 1.5 line spacing, 6 pt after
+  // each paragraph, justified. The runs of empty paragraphs that push the
+  // series and ISBN/ISSN lines down the page become stretchable space in the
+  // same proportions (ten, three and three blank lines).
+  set par(justify: true, leading: 0.62em, spacing: 1.2em)
   set text(size: 11pt)
   let lang = cfg.at("lang-key", default: "en")
   let or-default(key, fallback) = {
@@ -356,14 +366,12 @@
 
   block[#inn-t-str(cfg, "printed-by"): #or-default("printed-by", [Flisa Trykkeri A/S])]
   block[#inn-t-str(cfg, "place-of-publication"): #or-default("place-of-publication", [Elverum])]
-  v(1em)
 
   let year = cfg.at("year", default: none)
   let holder = or-default("copyright", inn-t-str(cfg, "copyright-holder"))
   block[© #holder#if year != none [ #year]]
-  v(1em)
   block(inn-t-str(cfg, "copyright-notice"))
-  v(1em)
+  v(10fr)
 
   // "PhD Dissertation in <programme> no. <n>" -- first in the language of the
   // thesis, then in the other one, exactly as the template has it.
@@ -387,16 +395,16 @@
       series-line(labels, name)
     }
   }
-  if any-programme { v(1em) }
+  if any-programme { v(3fr) }
 
   for key in ("isbn-printed", "isbn-digital", "issn-printed", "issn-digital") {
     let value = cfg.at(key, default: none)
     block[#inn-t-str(cfg, key): #if value != none [#value]]
   }
+  v(3fr)
 
   let note = cfg.at("colophon-note", default: none)
   if note != none {
-    v(1em)
     block(note)
   }
 }
@@ -460,13 +468,13 @@
   inn-front-heading(inn-t-str(cfg, "list-of-papers"))
   set par(justify: false)
   for (i, p) in papers.enumerate() {
-    let mark = p.at("label", default: numbering("I", i + 1))
+    let mark = p.at("label", default: numbering("1", i + 1))
     let reference = inn-paper-reference(p)
     block(below: 1.6em, width: 100%)[
-      #text(weight: "bold", fill: inn-green)[#inn-t-str(cfg, "paper") #mark]
+      #text(weight: "bold", fill: cfg.accent)[#inn-t-str(cfg, "paper") #mark]
       #v(1.5mm, weak: true)
       #reference
-      #if p.at("status", default: none) != none [ \ #text(style: "italic", fill: inn-grey, p.at("status"))]
+      #if p.at("status", default: none) != none [ \ #text(style: "italic", fill: cfg.muted, p.at("status"))]
       #if p.at("doi", default: none) != none [ \ #link("https://doi.org/" + p.at("doi"))]
     ]
   }
@@ -490,8 +498,9 @@
 
 // Separator sheets for the included articles, as in the university's
 // article-based template: one page per paper, opening on a recto, with a large
-// number. The paper's reference is printed underneath it.
-#let inn-paper-separator(mark, reference: none, open-right: true) = {
+// number (72 pt, regular weight, as in the template). The paper's reference is
+// printed underneath it.
+#let inn-paper-separator(mark, reference: none, open-right: true, accent: inn-green, weight: "regular") = {
   // The same markers a chapter opener leaves, so that an empty verso in front
   // of the sheet is treated like one in front of a chapter.
   [#metadata(none)<inn-flow-end>]
@@ -505,7 +514,7 @@
     #set align(center)
     #set par(justify: false)
     #v(1fr)
-    #text(size: 72pt, weight: "bold", fill: inn-green, mark)
+    #text(size: 72pt, weight: weight, fill: accent, mark)
     #if reference != none {
       v(10mm)
       block(width: 80%, text(size: 11pt, reference))
@@ -521,9 +530,16 @@
   let cfg = inn-cfg.get()
   let papers = cfg.at("papers", default: ())
   let open-right = cfg.at("two-sided", default: true) and cfg.at("open-right", default: true)
+  let weight = if cfg.at("thesis-type", default: "master") == "master" { "bold" } else { "regular" }
   for (i, p) in papers.enumerate() {
-    let mark = p.at("label", default: numbering("I", i + 1))
-    inn-paper-separator(mark, reference: inn-paper-reference(p), open-right: open-right)
+    let mark = p.at("label", default: numbering("1", i + 1))
+    inn-paper-separator(
+      mark,
+      reference: inn-paper-reference(p),
+      open-right: open-right,
+      accent: cfg.accent,
+      weight: weight,
+    )
   }
 }
 
@@ -586,12 +602,12 @@
     #v(1fr)
     #context {
       let cfg = inn-cfg.get()
-      text(size: 13pt, fill: inn-green, weight: "bold")[
+      text(size: 13pt, fill: cfg.accent, weight: "bold")[
         #inn-t-str(cfg, "part") #counter("inn-part").display("I")
       ]
+      v(4mm)
+      inn-rule(width: 40%, color: cfg.accent)
     }
-    #v(4mm)
-    #inn-rule(width: 40%)
     #v(6mm)
     #text(size: 24pt, weight: "bold", title)
     #v(2fr)
@@ -662,6 +678,7 @@
   open-right: true,
   running-head: auto,
   page-number-position: auto,
+  accent: auto,
   labels: (:),
   body,
 ) = {
@@ -674,8 +691,25 @@
   let page-number-position = if page-number-position == auto {
     if is-phd { "center" } else { "outside" }
   } else { page-number-position }
+  // The colour of headings, rules, links and other accents. A master's thesis
+  // uses INN green; a PhD dissertation is black throughout, like the
+  // university's Word templates. `thesis.accent` overrides either.
+  let accent = if accent == auto or accent == "auto" {
+    if is-phd { black } else { inn-green }
+  } else if accent == "green" {
+    inn-green
+  } else if accent == "black" {
+    black
+  } else if type(accent) == str {
+    rgb(accent)
+  } else {
+    accent
+  }
+  let muted = if accent == black { black } else { inn-grey }
   let cfg = (
     lang-key: lang-key,
+    accent: accent,
+    muted: muted,
     labels: labels,
     title: title,
     subtitle: subtitle,
@@ -738,7 +772,7 @@
   set enum(numbering: "1.a.i.")
   set list(marker: ([•], [--], [◦]))
 
-  show link: set text(fill: inn-green)
+  show link: set text(fill: accent)
   show raw: set text(size: 0.92em)
 
   // Block quotations: the university's guidance allows a slightly smaller
@@ -782,23 +816,43 @@
       }
     }
     inn-next-opener.update("auto")
-    block(width: 100%, above: 0pt, below: 1.2em)[
-      #set par(justify: false, leading: 0.5em)
-      #if it.numbering != none {
-        text(size: 1.1em, weight: "bold", fill: inn-green)[
-          #it.supplement #counter(heading).display(it.numbering)
+    context {
+      let alignment = if inn-next-align.get() == "center" { center } else { left }
+      if is-phd {
+        // "Heading 1" of the university's templates: 18 pt bold, black,
+        // single-spaced, 18 pt of space above and below, and the number set
+        // in a hanging indent of 1.1 cm in front of the text.
+        block(width: 100%, above: 0pt, below: 18pt, inset: (top: 18pt))[
+          #set align(alignment)
+          #set par(justify: false, leading: 0.5em, hanging-indent: 1.1cm)
+          #set text(size: 18pt, weight: "bold", fill: accent)
+          #if it.numbering != none {
+            box(width: 1.1cm, counter(heading).display(it.numbering))
+          }
+          #it.body
         ]
-        v(2mm, weak: true)
+      } else {
+        block(width: 100%, above: 0pt, below: 1.2em)[
+          #set align(alignment)
+          #set par(justify: false, leading: 0.5em)
+          #if it.numbering != none {
+            text(size: 1.1em, weight: "bold", fill: accent)[
+              #it.supplement #counter(heading).display(it.numbering)
+            ]
+            v(2mm, weak: true)
+          }
+          #text(size: 1.85em, weight: "bold", fill: accent, it.body)
+          #v(2mm, weak: true)
+          #inn-rule(thickness: 1pt, color: accent)
+        ]
       }
-      #text(size: 1.85em, weight: "bold", fill: inn-green, it.body)
-      #v(2mm, weak: true)
-      #inn-rule(thickness: 1pt)
-    ]
+    }
+    inn-next-align.update("auto")
   }
 
   show heading.where(level: 2): it => {
     set par(justify: false)
-    block(above: 1.6em, below: 0.7em, text(size: 1.3em, weight: "bold", fill: inn-green, it))
+    block(above: 1.6em, below: 0.7em, text(size: 1.3em, weight: "bold", fill: accent, it))
   }
   show heading.where(level: 3): it => {
     set par(justify: false)
@@ -856,8 +910,10 @@
   let page-footer = context {
     if page-number-position == "none" { return none }
     if inn-is-filler-page() { return none }
+    // A PhD dissertation numbers its pages in the body font and colour, as
+    // the templates' footer does; a master's thesis uses a smaller grey folio.
     let num = counter(page).display()
-    set text(size: if is-phd { 10pt } else { 9pt }, fill: inn-grey)
+    set text(size: if is-phd { fontsize } else { 9pt }, fill: muted)
     if page-number-position == "center" or not two-sided {
       align(center, num)
     } else if calc.even(here().page()) {
@@ -895,15 +951,16 @@
   body
 }
 
-// A green-accented theorem box, replacing the plain default from numbering.typ.
-#let theorem-render(prefix: none, title: "", full-title: auto, body) = {
+// An accent-coloured theorem box, replacing the plain default from numbering.typ.
+#let theorem-render(prefix: none, title: "", full-title: auto, body) = context {
+  let accent = inn-cfg.get().at("accent", default: inn-green)
   block(
     width: 100%,
     inset: (left: 1em, top: 0.4em, bottom: 0.4em),
-    stroke: (left: 2pt + inn-green),
+    stroke: (left: 2pt + accent),
   )[
     #if full-title != "" and full-title != auto and full-title != none {
-      text(fill: inn-green, weight: "bold", full-title)
+      text(fill: accent, weight: "bold", full-title)
       linebreak()
     }
     #body

@@ -1,4 +1,4 @@
-# Avhandlingens artikler {.unnumbered}
+# Avhandlingens artikler {.unnumbered .inn-center}
 
 <!--
 Div-en `#inn-papers` under gir ett nummerert skilleark per artikkel i

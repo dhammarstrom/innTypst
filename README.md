@@ -109,6 +109,8 @@ them off so you can place `#inn-toc()` yourself in a raw Typst block.
 when `two-sided` and `open-right` are on. A heading with the `.inn-next-page`
 class opens on the next page whichever side that is — the university wants the
 second summary of a PhD dissertation on page ii, straight after the first.
+A heading with the `.inn-center` class is centred, as the university's
+article-based template centres its "Dissertation articles" heading.
 
 **References.** The bibliography is rendered where you put the `#refs` div —
 that is, wherever `references.qmd` sits in `book.chapters` — rather than at the
@@ -159,6 +161,8 @@ thesis:
   institution: "..."        # replaces the default INN name for the language
   dedication: "For ..."
   heading-font: "Aptos Display"
+  accent: green             # green | black | "#rrggbb"
+                            # default: green for a master's, black for a PhD
 ```
 
 ---
@@ -179,6 +183,11 @@ and its Word title-page templates prescribe:
   dissertation's number in its PhD programme (in both Norwegian and English),
   and the ISBN/ISSN lines. The university asks that this page is never
   removed.
+* **Black throughout**, like the Word templates: headings, rules, links, the
+  page number and the paper separator sheets lose the green accent of the
+  master's format (`thesis.accent` brings it back or sets another colour).
+  Level-1 headings follow the templates' "Heading 1": 18 pt bold, the chapter
+  number in a hanging indent, 18 pt of space above and below, no rule.
 * **Page layout**: 2.5 cm margins on all sides, page number centred at the
   foot, no running head, every new part opening on a right-hand page. Set
   `fontsize: 11pt` and `linestretch: 1.5` (as the example configurations do)
@@ -421,8 +430,8 @@ _extensions/innThesis/
 `innThesis.lua` is where Quarto's book model meets Typst: it converts `part:`
 entries into part pages, marks the front-matter/main-matter boundary, starts the
 appendices, relocates the bibliography to the `#refs` div, and turns the
-`.inn-front-lists` / `.inn-next-page` heading classes and the `#inn-papers`
-div into the corresponding Typst calls.
+`.inn-front-lists` / `.inn-next-page` / `.inn-center` heading classes and the
+`#inn-papers` div into the corresponding Typst calls.
 
 The thesis format requires Quarto ≥ 1.9.17 (Typst book support); the handout
 requires ≥ 1.6.0. Both are tested against Quarto 1.9.27 (Typst 0.14) and

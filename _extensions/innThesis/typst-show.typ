@@ -173,6 +173,9 @@ $endif$
 $if(thesis.page-number-position)$
   page-number-position: "$thesis.page-number-position$",
 $endif$
+$if(thesis.accent)$
+  accent: "$thesis.accent$",
+$endif$
 $if(thesis.labels)$
   labels: ($for(thesis.labels/pairs)$"$it.key$": [$it.value$],$endfor$),
 $endif$
