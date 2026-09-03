@@ -1,19 +1,26 @@
 # =============================================================================
 #  Article-based PhD dissertation ("kappe") - a complete, self-contained
-#  project configuration.
+#  project configuration that follows the University of Inland Norway's rules
+#  for the layout of a PhD dissertation and its Word title-page template.
 #
 #  To use it, swap it in for the master's thesis configuration:
 #
 #      mv _quarto-phd.yml _quarto.yml
 #
-#  Compared with a master's thesis this adds:
-#    * `thesis.type: phd-articles`, which changes the statement on the title
-#      page and turns the colophon page on;
-#    * a `thesis.papers` list, which produces a "List of Papers" page in the
-#      front matter;
-#    * the dissertation series, ISBN and ISSN fields printed on the colophon.
+#  Compared with a master's thesis this gives you:
+#    * the university's PhD title page (author, title, "PhD Dissertation",
+#      year, faculty, logo) and the colophon page on its verso, with the
+#      dissertation's number in its PhD programme and the ISBN/ISSN lines;
+#    * the front matter in the order the university asks for: summaries in
+#      both languages, preface, table of contents, list of papers;
+#    * a "List of Papers" page generated from `thesis.papers`, and numbered
+#      separator sheets for the papers at the back;
+#    * the university's page layout: 2.5 cm margins, 11 pt, 1.5 line spacing,
+#      page number centred at the foot of the page, chapters opening on a
+#      right-hand page.
 #
-#  For a PhD monograph, use `thesis.type: phd` and drop `thesis.papers`.
+#  For a PhD monograph, use `thesis.type: phd` and drop `thesis.papers` and
+#  papers/papers.qmd.
 # =============================================================================
 
 project:
@@ -26,22 +33,30 @@ book:
   author: "Ola Nordmann"
   date: "2026-05-15"
   date-format: "MMMM YYYY"
-  output-file: "dissertation"
+  # The university wants one PDF, in A4, with a meaningful file name such as
+  # lastname_firstname_phd.pdf.
+  output-file: "nordmann_ola_phd"
 
+  # ---- Front matter, in the order the university prescribes ---------------
+  # Every part below opens on a right-hand page. The title page and colophon
+  # are generated; the rest are these files.
   chapters:
-    - index.qmd                          # Abstract
-    - frontmatter/sammendrag.qmd
-    - frontmatter/acknowledgements.qmd
+    - index.qmd                          # Abstract (English)       p. i
+    - frontmatter/sammendrag.qmd         # Sammendrag (Norwegian)   p. iii
+    - frontmatter/preface.qmd            # Preface - names the supervisors
+    - frontmatter/contents.qmd           # Table of contents, lists, papers
     - frontmatter/abbreviations.qmd
 
+    # ---- The synthesis ("kappe"); page numbers restart at 1 ----------------
     - chapters/01-introduction.qmd
     - chapters/02-background.qmd
     - chapters/03-methods.qmd
     - chapters/04-results.qmd
     - chapters/05-discussion.qmd
 
+    # ---- Back matter -------------------------------------------------------
     - references.qmd
-    - papers/papers.qmd
+    - papers/papers.qmd                  # separator sheets for the papers
 
   appendices:
     - appendices/a-questionnaire.qmd
@@ -52,23 +67,37 @@ lang: en
 thesis:
   type: phd-articles
 
+  # ---- Title page ----------------------------------------------------------
+  # The university's PhD title page carries the author, the title, the words
+  # "PhD Dissertation", the year and the faculty. Supervisors are named in the
+  # preface instead (PhD regulations § 10-1).
   faculty: "Faculty of Health and Social Sciences"
-  department: "Department of Public Health and Sport Sciences"
-  place: "Lillehammer"
   year: "2026"
 
-  supervisors:
-    - name: "Professor Kari Nordmann"
-      role: "Main supervisor"
-      affiliation: "University of Inland Norway"
-    - name: "Associate Professor Erik Hansen"
-      role: "Co-supervisor"
-      affiliation: "Norwegian School of Sport Sciences"
+  # ---- Colophon (verso of the title page) ----------------------------------
+  # Follows the university's template. Only the programme name has to be
+  # filled in; the number in the series is assigned by the faculty and the
+  # ISBN/ISSN by the library, and their lines are printed blank until then.
+  # Printer and place of publication default to "Flisa Trykkeri A/S" and
+  # "Elverum" as in the template.
+  programme: "Health and Welfare"          # in the language of the thesis
+  programme-nb: "helse og velferd"         # for the Norwegian line
+  series-number: "42"
+  # isbn-printed: "978-82-8380-000-0"
+  # isbn-digital: "978-82-8380-001-7"
+  # issn-printed: "2535-6151"
+  # issn-digital: "2535-6143"
+  # printed-by: "Flisa Trykkeri A/S"
+  # place-of-publication: "Elverum"
+  # copyright: "Ola Nordmann"              # default: "The author"
+  colophon-note: "The papers reproduced in this dissertation are included with permission from the respective publishers."
 
   # ---- The papers that make up the dissertation ----------------------------
-  # Each entry becomes one item on the "List of Papers" page. Use `citation:`
-  # instead of the separate fields if you would rather write the reference out
-  # yourself.
+  # Each entry becomes one item on the "List of Papers" page and one
+  # separator sheet at the back. The university asks that the reader is told
+  # what kind of manuscript each paper is and where and when it was published
+  # - that is `status` and `journal`. Use `citation:` instead of the separate
+  # fields if you would rather write the reference out yourself.
   papers:
     - label: "I"
       authors: "Nordmann, O., Hansen, E., & Nordmann, K."
@@ -89,26 +118,18 @@ thesis:
       year: "2026"
       title: "Individual variation in the response to supervised training"
       journal: "Journal of Applied Physiology"
-      status: "Submitted"
-
-  # ---- Colophon (verso of the title page) ----------------------------------
-  colophon: true
-  copyright: "Ola Nordmann"
-  series: "Doctoral dissertations at the University of Inland Norway"
-  series-number: "42"
-  isbn-printed: "978-82-8380-000-0"
-  isbn-digital: "978-82-8380-001-7"
-  issn-printed: "2535-6151"
-  issn-digital: "2535-6143"
-  printed-by: "Flisa Trykkeri A/S"
-  colophon-note: "The papers reproduced in this dissertation are included with permission from the respective publishers."
+      status: "Manuscript submitted for publication"
 
   dedication: "For everyone who turned up at seven in the morning."
 
+  # ---- Layout --------------------------------------------------------------
+  # These are the university's defaults for a PhD and need not be set:
+  # 2.5 cm margins on all sides, no running head, page number centred at the
+  # foot, and every new part opening on a right-hand page.
   two-sided: true
   open-right: true
-  running-head: true
-  toc-position: before-chapters
+  # running-head: false
+  # page-number-position: center       # center | outside | none
 
 bibliography: references.bib
 bibliographystyle: apa
@@ -119,8 +140,8 @@ crossref:
 format:
   innThesis-typst:
     toc: true
-    toc-depth: 3
+    toc-depth: 3          # the university asks for at most three levels
     lof: true
     lot: true
-    fontsize: 11pt
-    linestretch: 1.4
+    fontsize: 11pt        # the university asks for 11 pt ...
+    linestretch: 1.5      # ... with 1.5 line spacing

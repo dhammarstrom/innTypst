@@ -15,6 +15,9 @@ handout/handout_files/
 /inn-logo-en.png
 /inn-logo-nb.png
 /inn-logo-nn.png
+/inn-logo-wide-en.png
+/inn-logo-wide-nb.png
+/inn-logo-wide-nn.png
 /handout/logo-eng.png
 /handout/logo-nor.png
 
@@ -31,3 +34,6 @@ Thumbs.db
 
 /.quarto/
 **/*.quarto_ipynb
+
+# Template files and further information
+resources/

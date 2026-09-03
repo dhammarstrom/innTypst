@@ -57,11 +57,20 @@ $endif$
 $if(thesis.programme)$
   programme: [$thesis.programme$],
 $endif$
+$if(thesis.programme-nb)$
+  programme-nb: [$thesis.programme-nb$],
+$endif$
+$if(thesis.programme-en)$
+  programme-en: [$thesis.programme-en$],
+$endif$
 $if(thesis.institution)$
   institution: [$thesis.institution$],
 $endif$
 $if(thesis.place)$
   place: [$thesis.place$],
+$endif$
+$if(thesis.place-of-publication)$
+  place-of-publication: [$thesis.place-of-publication$],
 $endif$
 $if(thesis.year)$
   year: [$thesis.year$],
@@ -134,9 +143,6 @@ $endif$
 $if(thesis.copyright)$
   copyright: [$thesis.copyright$],
 $endif$
-$if(thesis.series)$
-  series: [$thesis.series$],
-$endif$
 $if(thesis.series-number)$
   series-number: [$thesis.series-number$],
 $endif$
@@ -163,6 +169,9 @@ $if(thesis.open-right)$
 $endif$
 $if(thesis.running-head)$
   running-head: $thesis.running-head$,
+$endif$
+$if(thesis.page-number-position)$
+  page-number-position: "$thesis.page-number-position$",
 $endif$
 $if(thesis.labels)$
   labels: ($for(thesis.labels/pairs)$"$it.key$": [$it.value$],$endfor$),

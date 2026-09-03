@@ -1,0 +1,10 @@
+# Innholdsfortegnelse {.unnumbered .inn-front-lists}
+
+<!--
+En fil der overskriften har klassen `.inn-front-lists` står for
+innholdsfortegnelsen: overskriften blir tittelen på innholdsfortegnelsen, og
+figurlisten, tabellisten og listen over artikler (de av dem som er slått på i
+_quarto.yml) følger etter. Universitetets ph.d.-mal plasserer dem rett etter
+forordet. Slett denne filen for å få dem satt inn automatisk sist i de
+innledende delene i stedet.
+-->

@@ -1,0 +1,151 @@
+# =============================================================================
+#  Artikkelbasert ph.d.-avhandling på bokmål - en komplett prosjektfil som
+#  følger Universitetet i Innlandets regler for oppsett av ph.d.-avhandlinger
+#  og universitetets forsidemal (Word).
+#
+#  Slik tar du den i bruk:
+#
+#      mv _quarto-phd-nb.yml _quarto.yml
+#      mv nb/sammendrag.qmd index.qmd
+#
+#  (Quarto krever at det første kapittelet i en bok er index.qmd i
+#  prosjektroten, så den første innledende siden må ligge der.) Resten av
+#  filene ligger under nb/.
+#
+#  Sammenlignet med en masteroppgave får du:
+#    * universitetets tittelside for ph.d. (forfatter, tittel,
+#      «Ph.d.-avhandling», år, fakultet, logo) og kolofonsiden på baksiden,
+#      med avhandlingens nummer i ph.d.-programmet og ISBN/ISSN-linjene;
+#    * de innledende delene i den rekkefølgen universitetet krever:
+#      sammendrag på norsk og engelsk, forord, innholdsfortegnelse, liste over
+#      artikler;
+#    * en side «Liste over artikler» laget fra `thesis.papers`, og nummererte
+#      skilleark for artiklene bakerst;
+#    * universitetets sideoppsett: 2,5 cm marger, 11 pkt., halvannen
+#      linjeavstand, sidetall midtstilt nederst, kapitler som begynner på
+#      høyreside.
+#
+#  For en monografi: bruk `thesis.type: phd` og fjern `thesis.papers` og
+#  nb/artikler.qmd. For nynorsk: sett `lang: nn`.
+# =============================================================================
+
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Fysisk aktivitet og kardiometabolsk helse"
+  subtitle: "Treningsrespons hos eldre voksne"
+  author: "Ola Nordmann"
+  date: "2026-05-15"
+  date-format: "MMMM YYYY"
+  # Avhandlingen leveres som én PDF i A4 med et meningsfylt filnavn, f.eks.
+  # etternavn_fornavn_phd.pdf.
+  output-file: "nordmann_ola_phd"
+
+  # ---- Innledende deler, i rekkefølgen universitetet krever ----------------
+  # Hver del under begynner på en høyreside. Tittelside og kolofonside lages
+  # automatisk; resten er disse filene.
+  chapters:
+    - index.qmd                          # Sammendrag (norsk)       s. i
+    - nb/abstract.qmd                    # Abstract (engelsk)       s. iii
+    - nb/forord.qmd                      # Forord - nevner veilederne
+    - nb/innhold.qmd                     # Innholdsfortegnelse, lister, artikler
+
+    # ---- Kappen (sidetallene starter på nytt fra 1) -------------------------
+    - nb/01-innledning.qmd
+    - nb/02-metode.qmd
+    - nb/03-resultater-og-diskusjon.qmd
+
+    # ---- Avsluttende deler -------------------------------------------------
+    - nb/referanser.qmd
+    - nb/artikler.qmd                    # skilleark for artiklene
+
+  appendices:
+    - nb/vedlegg-a-sporreskjema.qmd
+
+lang: nb
+
+# Quartos norske oversettelse kaller vedleggsskillet «Bilag»; universitetet
+# sier «Vedlegg».
+language:
+  section-title-appendices: "Vedlegg"
+
+thesis:
+  type: phd-articles
+
+  # ---- Tittelside ----------------------------------------------------------
+  # Universitetets tittelside for ph.d. har forfatter, tittel,
+  # «Ph.d.-avhandling», år og fakultet. Veilederne nevnes i forordet
+  # (ph.d.-forskriften § 10-1).
+  faculty: "Fakultet for helse- og sosialvitenskap"
+  year: "2026"
+
+  # ---- Kolofonside (baksiden av tittelsiden) --------------------------------
+  # Følger universitetets mal. Bare programnavnet skal fylles inn; nummeret i
+  # serien tildeles av fakultetet og ISBN/ISSN av biblioteket, og linjene
+  # deres står tomme til da. Trykkeri og utgivelsessted er «Flisa Trykkeri
+  # A/S» og «Elverum» som i malen.
+  programme: "helse og velferd"            # på avhandlingens språk
+  programme-en: "Health and Welfare"       # til den engelske linjen
+  series-number: "42"
+  # isbn-printed: "978-82-8380-000-0"
+  # isbn-digital: "978-82-8380-001-7"
+  # issn-printed: "2535-6151"
+  # issn-digital: "2535-6143"
+  # printed-by: "Flisa Trykkeri A/S"
+  # place-of-publication: "Elverum"
+  # copyright: "Ola Nordmann"              # standard: «Forfatteren»
+  colophon-note: "Artiklene er gjengitt med tillatelse fra tidsskriftene."
+
+  # ---- Artiklene som utgjør avhandlingen ------------------------------------
+  # Hver oppføring blir ett punkt på siden «Liste over artikler» og ett
+  # skilleark bakerst. Universitetet krever at det opplyses om type manuskript
+  # og hvor og når artikkelen ev. er publisert - det er `status` og `journal`.
+  # Bruk `citation:` i stedet for de enkelte feltene hvis du heller vil skrive
+  # referansen ut selv.
+  papers:
+    - label: "I"
+      authors: "Nordmann, O., Hansen, E., & Nordmann, K."
+      year: "2024"
+      title: "Cardiorespiratory fitness in community-dwelling older adults: a cross-sectional analysis"
+      journal: "Scandinavian Journal of Public Health, 52(3), 210–219"
+      status: "Publisert"
+      doi: "10.1177/00000000000000"
+    - label: "II"
+      authors: "Nordmann, O., & Nordmann, K."
+      year: "2025"
+      title: "Supervised endurance training in older adults: a randomised controlled trial"
+      journal: "Medicine & Science in Sports & Exercise, 57(1), 44–55"
+      status: "Publisert"
+      doi: "10.1249/MSS.0000000000000000"
+    - label: "III"
+      authors: "Nordmann, O., Hansen, E., Berg, S., & Nordmann, K."
+      year: "2026"
+      title: "Individual variation in the response to supervised training"
+      journal: "Journal of Applied Physiology"
+      status: "Manuskript, innsendt"
+
+  # ---- Oppsett -------------------------------------------------------------
+  # Dette er universitetets standard for ph.d. og trenger ikke settes: 2,5 cm
+  # marger på alle sider, ingen topptekst, sidetall midtstilt nederst, og hver
+  # ny del begynner på en høyreside.
+  two-sided: true
+  open-right: true
+  # running-head: false
+  # page-number-position: center       # center | outside | none
+
+bibliography: references.bib
+bibliographystyle: apa
+
+crossref:
+  chapters: true
+
+format:
+  innThesis-typst:
+    toc: true
+    toc-depth: 3          # universitetet ber om høyst tre nivåer
+    lof: true
+    lot: true
+    fontsize: 11pt        # universitetet ber om 11 pkt. ...
+    linestretch: 1.5      # ... med halvannen linjeavstand

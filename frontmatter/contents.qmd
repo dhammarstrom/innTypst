@@ -1,0 +1,10 @@
+# Table of contents {.unnumbered .inn-front-lists}
+
+<!--
+A file whose heading carries the `.inn-front-lists` class stands for the table
+of contents: the heading text becomes the title of the contents, and the list
+of figures, the list of tables and the list of papers (whichever of them are
+switched on in _quarto.yml) follow it. The university's PhD template puts them
+straight after the preface, before any list of abbreviations. Delete this file
+to have them inserted automatically at the end of the front matter instead.
+-->

@@ -12,6 +12,12 @@
 --                                         reference list sits where the author
 --                                         put it rather than after the
 --                                         appendices
+--   * the `#inn-front-lists` div       -> the table of contents and the other
+--                                         front lists, for authors who want
+--                                         them somewhere other than at the end
+--                                         of the front matter
+--   * the `#inn-papers` div            -> one numbered separator sheet per
+--                                         entry in `thesis.papers`
 --
 -- It also rewrites boolean values under `thesis:` to strings, because a Pandoc
 -- template cannot tell `false` from "not set".
@@ -182,69 +188,116 @@ end
 
 -- --------------------------------------------------------------- structure --
 
+-- Classes an author can put on a level-1 heading:
+--
+--   .inn-front-lists  the file stands for the table of contents: the heading
+--                     is replaced by the contents and the other front lists,
+--                     with the heading text as the title of the contents.
+--   .inn-next-page    open on the next page, whichever side it is, instead of
+--                     on a right-hand page. The university wants the second
+--                     summary on page ii, straight after the first.
+local function book_structure(el)
+  local state = quarto.doc.file_metadata()
+  local file = state and state.file
+  if file == nil then
+    return nil
+  end
+
+  local item_type = file.bookItemType
+  if item_type == nil then
+    return nil
+  end
+
+  -- A `part:` entry gets a divider page of its own.
+  if item_type == "part" then
+    return raw("#inn-part[" .. inlines_to_typst(el.content) .. "]")
+  end
+
+  -- The synthetic divider that Quarto inserts before `appendices:`.
+  if item_type == "appendix" and not appendices_started then
+    appendices_started = true
+    local title = meta_string(el.content)
+    if title == "" then
+      title = "Appendices"
+    end
+    return {
+      raw('#show: inn-appendices.with("' .. title:gsub('"', '\\"') .. '")'),
+      el,
+    }
+  end
+
+  -- The first numbered chapter ends the front matter.
+  if item_type == "chapter" and file.bookItemNumber ~= nil and not seen_first_numbered then
+    seen_first_numbered = true
+    local blocks = {}
+    if not front_lists_emitted and opts.toc_position ~= "after-title" and opts.toc_position ~= "none" then
+      front_lists_emitted = true
+      blocks[#blocks + 1] = raw("#inn-front-lists()")
+    end
+    blocks[#blocks + 1] = raw("#show: inn-mainmatter")
+    blocks[#blocks + 1] = el
+    return blocks
+  end
+
+  return nil
+end
+
 local structure = {
   Header = function(el)
     if not is_typst() or el.level ~= 1 then
       return nil
     end
 
-    local state = quarto.doc.file_metadata()
-    local file = state and state.file
-    if file == nil then
-      return nil
+    if el.classes:includes("inn-front-lists") then
+      front_lists_emitted = true
+      return raw("#inn-front-lists(title: [" .. inlines_to_typst(el.content) .. "])")
     end
 
-    local item_type = file.bookItemType
-    if item_type == nil then
-      return nil
-    end
+    local result = book_structure(el)
 
-    -- A `part:` entry gets a divider page of its own.
-    if item_type == "part" then
-      return raw("#inn-part[" .. inlines_to_typst(el.content) .. "]")
-    end
-
-    -- The synthetic divider that Quarto inserts before `appendices:`.
-    if item_type == "appendix" and not appendices_started then
-      appendices_started = true
-      local title = meta_string(el.content)
-      if title == "" then
-        title = "Appendices"
+    if el.classes:includes("inn-next-page") then
+      local blocks = { raw('#inn-next-opener.update("any")') }
+      if result == nil then
+        blocks[#blocks + 1] = el
+      elseif result.t ~= nil then
+        blocks[#blocks + 1] = result
+      else
+        for _, b in ipairs(result) do
+          blocks[#blocks + 1] = b
+        end
       end
-      return {
-        raw('#show: inn-appendices.with("' .. title:gsub('"', '\\"') .. '")'),
-        el,
-      }
-    end
-
-    -- The first numbered chapter ends the front matter.
-    if item_type == "chapter" and file.bookItemNumber ~= nil and not seen_first_numbered then
-      seen_first_numbered = true
-      local blocks = {}
-      if opts.toc_position ~= "after-title" and opts.toc_position ~= "none" then
-        front_lists_emitted = true
-        blocks[#blocks + 1] = raw("#inn-front-lists()")
-      end
-      blocks[#blocks + 1] = raw("#show: inn-mainmatter")
-      blocks[#blocks + 1] = el
       return blocks
     end
 
-    return nil
+    return result
   end,
 
-  -- The references chapter: Quarto leaves an empty `#refs` div where the
-  -- reference list belongs.
+  -- Placeholder divs that the author puts in a chapter file:
+  --
+  --   * `#refs`            Quarto leaves this empty div where the reference
+  --                        list belongs.
+  --   * `#inn-front-lists` the table of contents, lists of figures/tables and
+  --                        the list of papers, e.g. straight after the preface
+  --                        as in the university's PhD template.
+  --   * `#inn-papers`      separator sheets for the included articles.
   Div = function(el)
-    if not is_typst() or el.identifier ~= "refs" then
+    if not is_typst() then
       return nil
     end
-    local block = bibliography_block(false)
-    if block == nil then
-      return nil
+    if el.identifier == "refs" then
+      local block = bibliography_block(false)
+      if block == nil then
+        return nil
+      end
+      bibliography_emitted = true
+      return block
+    elseif el.identifier == "inn-front-lists" then
+      front_lists_emitted = true
+      return raw("#inn-front-lists()")
+    elseif el.identifier == "inn-papers" then
+      return raw("#inn-papers()")
     end
-    bibliography_emitted = true
-    return block
+    return nil
   end,
 }
 

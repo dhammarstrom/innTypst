@@ -1,0 +1,16 @@
+# Avhandlingens artikler {.unnumbered}
+
+<!--
+Div-en `#inn-papers` under gir ett nummerert skilleark per artikkel i
+`thesis.papers` i _quarto.yml, slik universitetets mal for artikkelbasert
+avhandling gjør. Selve artiklene legges normalt inn i den ferdige PDF-en
+etterpå, i publisert form, bak hvert sitt skilleark.
+-->
+
+De tre artiklene som utgjør avhandlingen følger her, i samme rekkefølge som i
+listen over artikler først i avhandlingen. Artikkel I og II er gjengitt i tråd
+med tidsskriftenes vilkår for åpen tilgang; artikkel III er tatt med i innsendt
+form.
+
+::: {#inn-papers}
+:::

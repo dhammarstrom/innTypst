@@ -93,14 +93,18 @@ thesis:
   # institution: "..."        overrides the default INN name for the language
 
   # ---- PhD only ------------------------------------------------------------
-  # colophon: true            (on by default for PhD theses)
-  # series: "Doctoral dissertations at the University of Inland Norway"
-  # series-number: "42"
+  # `type: phd` or `type: phd-articles` switches to the university's PhD title
+  # page and colophon and to its page layout (2.5 cm margins, centred page
+  # numbers, no running head). See _quarto-phd.yml for a complete example.
+  # programme: "Health and Welfare"        the PhD programme, for the colophon
+  # programme-nb: "helse og velferd"       ... and its name in the other language
+  # series-number: "42"                    the dissertation's number in the programme
   # isbn-printed: "978-82-XXXX-XXX-X"
   # isbn-digital: "978-82-XXXX-XXX-X"
   # issn-printed: "2535-XXXX"
   # issn-digital: "2535-XXXX"
-  # printed-by: "Flisa Trykkeri A/S"
+  # printed-by: "Flisa Trykkeri A/S"       (default)
+  # place-of-publication: "Elverum"        (default)
   #
   # For an article-based dissertation (type: phd-articles) list the papers and
   # a "List of Papers" page is generated:

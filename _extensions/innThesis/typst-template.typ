@@ -19,7 +19,7 @@
 // overridden from YAML via `thesis.labels.<key>`.
 #let inn-i18n = (
   en: (
-    contents: "Contents",
+    contents: "Table of contents",
     list-of-figures: "List of Figures",
     list-of-tables: "List of Tables",
     list-of-papers: "List of Papers",
@@ -34,21 +34,24 @@
     supervisors: "Supervisors",
     institution: "University of Inland Norway",
     master-thesis: "Master's thesis",
-    phd-thesis: "Doctoral dissertation",
+    phd-thesis: "PhD Dissertation",
     submitted-master: "Thesis submitted for the degree of",
-    submitted-phd: "Thesis submitted for the degree of Philosophiae Doctor (PhD)",
     credits: "credits",
-    series: "Doctoral dissertations at the University of Inland Norway",
+    // Colophon (kolofonside). The wording follows the university's Word
+    // templates for PhD dissertations.
+    phd-in: "PhD Dissertation in",
     number: "no.",
     printed-by: "Printed by",
-    isbn-printed: "ISBN (printed version)",
-    isbn-digital: "ISBN (digital version)",
-    issn-printed: "ISSN (printed version)",
-    issn-digital: "ISSN (digital version)",
+    place-of-publication: "Place of publication",
+    isbn-printed: "ISBN printed version",
+    isbn-digital: "ISBN digital version",
+    issn-printed: "ISSN printed version",
+    issn-digital: "ISSN digital version",
     copyright-holder: "The author",
+    copyright-notice: "This material is protected by copyright law. Without explicit authorisation, reproduction is only allowed in so far it is permitted by law or by agreement with a collecting society.",
   ),
   nb: (
-    contents: "Innhold",
+    contents: "Innholdsfortegnelse",
     list-of-figures: "Figurliste",
     list-of-tables: "Tabelliste",
     list-of-papers: "Liste over artikler",
@@ -63,21 +66,22 @@
     supervisors: "Veiledere",
     institution: "Universitetet i Innlandet",
     master-thesis: "Masteroppgave",
-    phd-thesis: "Doktoravhandling",
+    phd-thesis: "Ph.d.-avhandling",
     submitted-master: "Oppgave levert for graden",
-    submitted-phd: "Avhandling levert for graden philosophiae doctor (ph.d.)",
     credits: "studiepoeng",
-    series: "Doktoravhandlinger ved Universitetet i Innlandet",
+    phd-in: "Ph.d.-avhandling i",
     number: "nr.",
     printed-by: "Trykk",
-    isbn-printed: "ISBN (trykt utgave)",
-    isbn-digital: "ISBN (digital utgave)",
-    issn-printed: "ISSN (trykt utgave)",
-    issn-digital: "ISSN (digital utgave)",
+    place-of-publication: "Utgivelsessted",
+    isbn-printed: "ISBN trykt utgave",
+    isbn-digital: "ISBN digital utgave",
+    issn-printed: "ISSN trykt utgave",
+    issn-digital: "ISSN digital utgave",
     copyright-holder: "Forfatteren",
+    copyright-notice: "Det må ikke kopieres fra publikasjonen i strid med Åndsverkloven eller i strid med avtaler om kopiering inngått med Kopinor.",
   ),
   nn: (
-    contents: "Innhald",
+    contents: "Innhaldsliste",
     list-of-figures: "Figurliste",
     list-of-tables: "Tabelliste",
     list-of-papers: "Liste over artiklar",
@@ -92,18 +96,19 @@
     supervisors: "Rettleiarar",
     institution: "Universitetet i Innlandet",
     master-thesis: "Masteroppgåve",
-    phd-thesis: "Doktoravhandling",
+    phd-thesis: "Ph.d.-avhandling",
     submitted-master: "Oppgåve levert for graden",
-    submitted-phd: "Avhandling levert for graden philosophiae doctor (ph.d.)",
     credits: "studiepoeng",
-    series: "Doktoravhandlingar ved Universitetet i Innlandet",
+    phd-in: "Ph.d.-avhandling i",
     number: "nr.",
     printed-by: "Trykk",
-    isbn-printed: "ISBN (trykt utgåve)",
-    isbn-digital: "ISBN (digital utgåve)",
-    issn-printed: "ISSN (trykt utgåve)",
-    issn-digital: "ISSN (digital utgåve)",
+    place-of-publication: "Utgjevarstad",
+    isbn-printed: "ISBN trykt utgåve",
+    isbn-digital: "ISBN digital utgåve",
+    issn-printed: "ISSN trykt utgåve",
+    issn-digital: "ISSN digital utgåve",
     copyright-holder: "Forfattaren",
+    copyright-notice: "Det må ikkje kopierast frå publikasjonen i strid med Åndsverkloven eller i strid med avtaler om kopiering inngått med Kopinor.",
   ),
 )
 
@@ -118,6 +123,11 @@
 // ------------------------------------------------------ document-wide state --
 #let inn-cfg = state("inn-cfg", (:))
 #let inn-matter = state("inn-matter", "front")
+// "auto": the next level-1 heading opens as the layout dictates (normally on a
+// recto); "any": it opens on the next page whichever side that is. Set by
+// innThesis.lua for headings carrying the `.inn-next-page` class, e.g. the
+// second summary, which the university wants on page ii.
+#let inn-next-opener = state("inn-next-opener", "auto")
 
 // Look up a label, honouring user overrides in `thesis.labels`.
 #let inn-t-str(cfg, key) = {
@@ -163,15 +173,18 @@
   line(length: width, stroke: thickness + color)
 }
 
-#let inn-logo-image(logo, width: 38mm) = {
+// `logo` is either a shorthand ("en" / "nb" / "nn") or a path to an image. The
+// shorthand picks the stacked green logo, or -- with `wide: true` -- the
+// horizontal black logo used at the foot of the university's PhD title page.
+#let inn-logo-image(logo, width: 38mm, wide: false) = {
   if logo == none { return none }
-  // `logo` is either a shorthand ("en" / "nb" / "nn") or a path to an image.
+  let suffix = if wide { "-wide" } else { "" }
   let path = if logo in ("en", "eng", "english") {
-    "inn-logo-en.png"
+    "inn-logo" + suffix + "-en.png"
   } else if logo in ("nb", "no", "nor", "norwegian", "bokmal") {
-    "inn-logo-nb.png"
+    "inn-logo" + suffix + "-nb.png"
   } else if logo in ("nn", "nynorsk") {
-    "inn-logo-nn.png"
+    "inn-logo" + suffix + "-nn.png"
   } else {
     logo
   }
@@ -237,14 +250,9 @@
 
   block(width: 100%, text(size: 11pt, fill: inn-grey, inn-statement(cfg)))
 
-  // "Thesis submitted for the degree of X" -- for a PhD the sentence is
-  // complete on its own, for a master's it needs the name of the degree.
+  // "Thesis submitted for the degree of X".
   let degree = cfg.at("degree", default: none)
-  let is-master = cfg.at("thesis-type", default: "master") == "master"
-  if not is-master {
-    v(2mm)
-    block(width: 100%, text(size: 11pt, fill: inn-grey, inn-t-str(cfg, "submitted-phd")))
-  } else if degree != none {
+  if degree != none {
     v(2mm)
     block(
       width: 100%,
@@ -292,47 +300,103 @@
   block(width: 100%, text(size: 10.5pt, foot.join(linebreak())))
 }
 
-// Verso of the title page: copyright, dissertation series, ISBN/ISSN.
-#let inn-colophon(cfg) = {
+// PhD title page, laid out like the university's Word templates
+// (forsidemal-*.docx / title-page-template-*.docx): everything centred, the
+// author above the title, then "PhD Dissertation", the year and the faculty,
+// and the horizontal INN logo at the foot of the page. Supervisors are not
+// named here -- the PhD regulations (§ 10-1) want them in the preface.
+#let inn-phd-title-page(cfg) = {
   set par(justify: false, leading: 0.65em)
-  set text(size: 9.5pt, fill: inn-grey)
-  v(1fr)
+  set align(center)
+  v(14mm)
+  let authors = cfg.at("authors", default: ())
+  if authors.len() > 0 {
+    block(width: 100%, text(size: 18pt, weight: "bold", authors.join(linebreak())))
+  }
+  v(10mm)
+  block(width: 100%, text(size: 26pt, weight: "bold", cfg.at("title", default: [])))
+  let subtitle = cfg.at("subtitle", default: none)
+  if subtitle != none {
+    v(4mm)
+    block(width: 100%, text(size: 16pt, subtitle))
+  }
+  v(2fr)
+  block(width: 100%, text(size: 14pt, inn-statement(cfg)))
+  v(6mm)
   let year = cfg.at("year", default: none)
-  let holder = cfg.at("copyright", default: none)
-  if holder == none {
-    let authors = cfg.at("authors", default: ())
-    holder = if authors.len() > 0 {
-      authors.join([, ])
-    } else {
-      inn-t-str(cfg, "copyright-holder")
+  if year == none { year = cfg.at("date", default: none) }
+  if year != none {
+    block(width: 100%, text(size: 14pt, year))
+  }
+  v(6mm)
+  let faculty = cfg.at("faculty", default: none)
+  if faculty != none {
+    block(width: 100%, text(size: 12pt, faculty))
+  }
+  v(3fr)
+  inn-logo-image(cfg.at("logo", default: none), wide: true, width: 52mm)
+  v(2mm)
+}
+
+// Verso of the title page: the colophon ("kolofonside"). It follows the
+// university's Word template line by line -- printer and place of
+// publication, copyright, the legal notice, the dissertation's number in its
+// PhD programme in both Norwegian and English, and the ISBN/ISSN lines. The
+// ISBN/ISSN lines are printed even when empty, as in the template, so that
+// they can be filled in once the numbers have been assigned. The university
+// asks that this page is never removed.
+#let inn-colophon(cfg) = {
+  set par(justify: false, leading: 0.8em, spacing: 0.8em)
+  set text(size: 11pt)
+  let lang = cfg.at("lang-key", default: "en")
+  let or-default(key, fallback) = {
+    let v = cfg.at(key, default: none)
+    if v == none { fallback } else { v }
+  }
+
+  block[#inn-t-str(cfg, "printed-by"): #or-default("printed-by", [Flisa Trykkeri A/S])]
+  block[#inn-t-str(cfg, "place-of-publication"): #or-default("place-of-publication", [Elverum])]
+  v(1em)
+
+  let year = cfg.at("year", default: none)
+  let holder = or-default("copyright", inn-t-str(cfg, "copyright-holder"))
+  block[© #holder#if year != none [ #year]]
+  v(1em)
+  block(inn-t-str(cfg, "copyright-notice"))
+  v(1em)
+
+  // "PhD Dissertation in <programme> no. <n>" -- first in the language of the
+  // thesis, then in the other one, exactly as the template has it.
+  let n = cfg.at("series-number", default: none)
+  let programme = cfg.at("programme", default: none)
+  let programme-nb = or-default("programme-nb", programme)
+  let programme-en = or-default("programme-en", programme)
+  let series-line(labels, name) = {
+    block[#labels.phd-in #name#if n != none [ #labels.number #n]]
+  }
+  let own = (phd-in: inn-t-str(cfg, "phd-in"), number: inn-t-str(cfg, "number"))
+  let lines = if lang == "en" {
+    ((own, programme-en), (inn-i18n.nb, programme-nb))
+  } else {
+    ((own, programme-nb), (inn-i18n.en, programme-en))
+  }
+  let any-programme = false
+  for (labels, name) in lines {
+    if name != none {
+      any-programme = true
+      series-line(labels, name)
     }
   }
-  block[© #holder#if year != none [, #year]]
-  v(3mm)
-
-  let series = cfg.at("series", default: none)
-  if series != none {
-    let n = cfg.at("series-number", default: none)
-    block[#series#if n != none [ #inn-t-str(cfg, "number") #n]]
-    v(3mm)
-  }
+  if any-programme { v(1em) }
 
   for key in ("isbn-printed", "isbn-digital", "issn-printed", "issn-digital") {
     let value = cfg.at(key, default: none)
-    if value != none {
-      block(below: 1.5mm)[#inn-t-str(cfg, key): #value]
-    }
-  }
-
-  let printer = cfg.at("printed-by", default: none)
-  if printer != none {
-    v(3mm)
-    block[#inn-t-str(cfg, "printed-by"): #printer]
+    block[#inn-t-str(cfg, key): #if value != none [#value]]
   }
 
   let note = cfg.at("colophon-note", default: none)
   if note != none {
-    v(5mm)
+    v(1em)
     block(note)
   }
 }
@@ -350,9 +414,9 @@
   heading(level: 1, numbering: none, outlined: false, bookmarked: true, body)
 }
 
-#let inn-toc() = context {
+#let inn-toc(title: none) = context {
   let cfg = inn-cfg.get()
-  inn-front-heading(inn-t-str(cfg, "contents"))
+  inn-front-heading(if title != none { title } else { inn-t-str(cfg, "contents") })
   outline(title: none, depth: cfg.at("toc-depth", default: 3), indent: 1.2em)
 }
 
@@ -368,7 +432,27 @@
   outline(title: none, target: figure.where(kind: "quarto-float-tbl"))
 }
 
-// List of papers, for an article-based ("kappe") PhD dissertation.
+// The reference for one entry of `thesis.papers`: either the `citation` the
+// author wrote out, or one assembled from the separate fields.
+#let inn-paper-reference(p) = {
+  if p.at("citation", default: none) != none {
+    return p.at("citation")
+  }
+  let authors = p.at("authors", default: none)
+  let year = p.at("year", default: none)
+  let title = p.at("title", default: none)
+  let journal = p.at("journal", default: none)
+  [
+    #if authors != none [#authors ]
+    #if year != none [(#year). ]
+    #if title != none [#title. ]
+    #if journal != none [#journal.]
+  ]
+}
+
+// List of papers, for an article-based ("kappe") PhD dissertation. The
+// university asks that the reader is told what kind of manuscript each paper
+// is, and where and when it was published -- that is the `status` field.
 #let inn-list-of-papers() = context {
   let cfg = inn-cfg.get()
   let papers = cfg.at("papers", default: ())
@@ -377,20 +461,7 @@
   set par(justify: false)
   for (i, p) in papers.enumerate() {
     let mark = p.at("label", default: numbering("I", i + 1))
-    let reference = if p.at("citation", default: none) != none {
-      p.at("citation")
-    } else {
-      let authors = p.at("authors", default: none)
-      let year = p.at("year", default: none)
-      let title = p.at("title", default: none)
-      let journal = p.at("journal", default: none)
-      [
-        #if authors != none [#authors ]
-        #if year != none [(#year). ]
-        #if title != none [#title. ]
-        #if journal != none [#journal.]
-      ]
-    }
+    let reference = inn-paper-reference(p)
     block(below: 1.6em, width: 100%)[
       #text(weight: "bold", fill: inn-green)[#inn-t-str(cfg, "paper") #mark]
       #v(1.5mm, weak: true)
@@ -402,11 +473,14 @@
 }
 
 // Emit whatever front lists the configuration asks for, in a fixed order.
-// innThesis.lua calls this once, at the front-matter/main-matter boundary
-// (or right after the title page, depending on `thesis.toc-position`).
-#let inn-front-lists() = context {
+// innThesis.lua calls this once: where the author put a heading with the
+// `.inn-front-lists` class (its text becomes the title of the table of
+// contents) or a `#inn-front-lists` div, otherwise at the front-matter/
+// main-matter boundary or right after the title page, depending on
+// `thesis.toc-position`.
+#let inn-front-lists(title: none) = context {
   let cfg = inn-cfg.get()
-  if cfg.at("toc", default: true) { inn-toc() }
+  if cfg.at("toc", default: true) { inn-toc(title: title) }
   if cfg.at("lof", default: false) { inn-lof() }
   if cfg.at("lot", default: false) { inn-lot() }
   if cfg.at("papers", default: ()).len() > 0 and cfg.at("list-of-papers", default: true) {
@@ -414,13 +488,60 @@
   }
 }
 
-// A recto-opening chapter can leave an empty verso behind. Such a page carries
-// no folio and no running head. It is recognised by: the next page opens a
-// chapter, this page opens nothing, and no content ended here (chapter openers
-// drop an `<inn-flow-end>` marker on the page the previous text ran out on).
+// Separator sheets for the included articles, as in the university's
+// article-based template: one page per paper, opening on a recto, with a large
+// number. The paper's reference is printed underneath it.
+#let inn-paper-separator(mark, reference: none, open-right: true) = {
+  // The same markers a chapter opener leaves, so that an empty verso in front
+  // of the sheet is treated like one in front of a chapter.
+  [#metadata(none)<inn-flow-end>]
+  if open-right {
+    pagebreak(weak: true, to: "odd")
+  } else {
+    pagebreak(weak: true)
+  }
+  [#metadata(none)<inn-opener>]
+  block(width: 100%, height: 100%)[
+    #set align(center)
+    #set par(justify: false)
+    #v(1fr)
+    #text(size: 72pt, weight: "bold", fill: inn-green, mark)
+    #if reference != none {
+      v(10mm)
+      block(width: 80%, text(size: 11pt, reference))
+    }
+    #v(1.4fr)
+  ]
+}
+
+// One separator sheet per entry in `thesis.papers`. innThesis.lua emits this
+// where the author puts a `#inn-papers` div -- normally in a short
+// "Dissertation articles" chapter after the references.
+#let inn-papers() = context {
+  let cfg = inn-cfg.get()
+  let papers = cfg.at("papers", default: ())
+  let open-right = cfg.at("two-sided", default: true) and cfg.at("open-right", default: true)
+  for (i, p) in papers.enumerate() {
+    let mark = p.at("label", default: numbering("I", i + 1))
+    inn-paper-separator(mark, reference: inn-paper-reference(p), open-right: open-right)
+  }
+}
+
+// Pages that open a chapter or a paper separator sheet.
+#let inn-opener-pages() = {
+  let headings = query(heading.where(level: 1)).map(h => h.location().page())
+  let sheets = query(<inn-opener>).map(m => m.location().page())
+  headings + sheets
+}
+
+// A recto-opening chapter (or separator sheet) can leave an empty verso
+// behind. Such a page carries no folio and no running head. It is recognised
+// by: the next page opens something, this page opens nothing, and no content
+// ended here (openers drop an `<inn-flow-end>` marker on the page the
+// previous text ran out on).
 #let inn-is-filler-page() = {
   let p = here().page()
-  let starts = query(heading.where(level: 1)).map(h => h.location().page())
+  let starts = inn-opener-pages()
   if not (p + 1 in starts) {
     false
   } else if p in starts {
@@ -516,8 +637,11 @@
   faculty: none,
   department: none,
   programme: none,
+  programme-nb: none,
+  programme-en: none,
   institution: none,
   place: none,
+  place-of-publication: none,
   year: none,
   logo: auto,
   statement: none,
@@ -528,7 +652,6 @@
   colophon: auto,
   colophon-note: none,
   copyright: none,
-  series: none,
   series-number: none,
   isbn-printed: none,
   isbn-digital: none,
@@ -537,11 +660,20 @@
   printed-by: none,
   two-sided: true,
   open-right: true,
-  running-head: true,
+  running-head: auto,
+  page-number-position: auto,
   labels: (:),
   body,
 ) = {
   let lang-key = inn-lang-key(lang)
+  // PhD dissertations follow the university's layout rules (2.5 cm margins,
+  // page number centred at the foot, no running head); master's theses keep
+  // the book-style defaults. Everything can still be set explicitly.
+  let is-phd = thesis-type != "master"
+  let running-head = if running-head == auto { not is-phd } else { running-head }
+  let page-number-position = if page-number-position == auto {
+    if is-phd { "center" } else { "outside" }
+  } else { page-number-position }
   let cfg = (
     lang-key: lang-key,
     labels: labels,
@@ -555,12 +687,15 @@
     faculty: faculty,
     department: department,
     programme: programme,
+    programme-nb: programme-nb,
+    programme-en: programme-en,
     institution: if institution != none {
       institution
     } else {
       inn-i18n.at(lang-key).institution
     },
     place: place,
+    place-of-publication: place-of-publication,
     year: year,
     logo: if logo == auto {
       if lang-key == "en" { "en" } else { lang-key }
@@ -572,7 +707,6 @@
     dedication: dedication,
     copyright: copyright,
     colophon-note: colophon-note,
-    series: series,
     series-number: series-number,
     isbn-printed: isbn-printed,
     isbn-digital: isbn-digital,
@@ -607,9 +741,17 @@
   show link: set text(fill: inn-green)
   show raw: set text(size: 0.92em)
 
+  // Block quotations: the university's guidance allows a slightly smaller
+  // size, an indent and single line spacing.
+  show quote.where(block: true): set text(size: 0.92em)
+  show quote.where(block: true): set par(leading: 0.65em, spacing: 0.65em)
+  show quote.where(block: true): set pad(x: 1.5em)
+
   // ---- page geometry --------------------------------------------------------
   let page-margin = if margin != none {
     margin
+  } else if is-phd {
+    (x: 2.5cm, y: 2.5cm)
   } else if two-sided {
     (inside: 3cm, outside: 2.5cm, top: 2.5cm, bottom: 2.5cm)
   } else {
@@ -632,11 +774,14 @@
   show heading.where(level: 1): it => {
     // Chapter (and unnumbered front/back-matter) opener.
     [#metadata(none)<inn-flow-end>]
-    if open-right and two-sided {
-      pagebreak(weak: true, to: "odd")
-    } else {
-      pagebreak(weak: true)
+    context {
+      if open-right and two-sided and inn-next-opener.get() != "any" {
+        pagebreak(weak: true, to: "odd")
+      } else {
+        pagebreak(weak: true)
+      }
     }
+    inn-next-opener.update("auto")
     block(width: 100%, above: 0pt, below: 1.2em)[
       #set par(justify: false, leading: 0.5em)
       #if it.numbering != none {
@@ -682,8 +827,8 @@
     if inn-matter.get() == "front" { return none }
     if inn-is-filler-page() { return none }
     let this-page = here().page()
-    // No running head on pages that open a chapter.
-    if query(heading.where(level: 1)).any(c => c.location().page() == this-page) {
+    // No running head on pages that open a chapter or a separator sheet.
+    if this-page in inn-opener-pages() {
       return none
     }
     let before = query(selector(heading.where(level: 1)).before(here()))
@@ -709,20 +854,23 @@
   }
 
   let page-footer = context {
+    if page-number-position == "none" { return none }
     if inn-is-filler-page() { return none }
     let num = counter(page).display()
-    set text(size: 9pt, fill: inn-grey)
-    if two-sided {
-      if calc.even(here().page()) { align(left, num) } else { align(right, num) }
-    } else {
+    set text(size: if is-phd { 10pt } else { 9pt }, fill: inn-grey)
+    if page-number-position == "center" or not two-sided {
       align(center, num)
+    } else if calc.even(here().page()) {
+      align(left, num)
+    } else {
+      align(right, num)
     }
   }
 
   // ---- front pages ----------------------------------------------------------
   // The title page and colophon carry no page number and no running head.
   set page(numbering: none, header: none, footer: none)
-  inn-title-page(cfg)
+  if is-phd { inn-phd-title-page(cfg) } else { inn-title-page(cfg) }
 
   let want-colophon = if colophon == auto { thesis-type != "master" } else { colophon }
   if want-colophon {

@@ -1,4 +1,10 @@
-# Sammendrag {.unnumbered}
+# Sammendrag {.unnumbered .inn-next-page}
+
+<!--
+The `.inn-next-page` class lets this summary open on the page after the
+abstract, whichever side that is, so that the two summaries land on pages i
+and ii as the university asks. Remove it to open on a right-hand page.
+-->
 
 **Bakgrunn.** Regelmessig fysisk aktivitet er forbundet med lavere risiko for
 kardiometabolsk sykdom, men dose–respons-forholdet hos eldre voksne er lite

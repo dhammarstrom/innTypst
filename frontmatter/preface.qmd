@@ -1,0 +1,23 @@
+# Preface {.unnumbered}
+
+<!--
+The university's PhD regulations (§ 10-1) require that the supervisors are
+named in the preface. For an article-based dissertation the preface is written
+in the same language as the synthesis ("kappe").
+-->
+
+The work presented in this dissertation was carried out at the Department of
+Public Health and Sport Sciences, Faculty of Health and Social Sciences,
+University of Inland Norway, between 2022 and 2026. It was funded by the
+university's PhD programme in Health and Welfare.
+
+My main supervisor has been Professor Kari Nordmann, University of Inland
+Norway, and my co-supervisor Associate Professor Erik Hansen, Norwegian School
+of Sport Sciences. I am grateful to both for their patience and for reading
+more drafts than anyone reasonably should. Thanks also to the participants, who
+turned up at seven in the morning through two Innlandet winters.
+
+Any remaining errors are my own.
+
+Lillehammer, May 2026\
+Ola Nordmann

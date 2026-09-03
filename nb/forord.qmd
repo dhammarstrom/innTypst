@@ -1,11 +1,19 @@
 # Forord {.unnumbered}
 
-Denne masteroppgaven er skrevet ved Institutt for folkehelse- og
-idrettsvitenskap ved Universitetet i Innlandet.
+<!--
+Ph.d.-forskriften (§ 10-1) krever at veilederne nevnes i forordet. I en
+artikkelbasert avhandling skrives forordet på samme språk som kappen.
+-->
 
-Takk til veilederne mine for tålmodighet og for å ha lest flere utkast enn
-noen med rimelighet burde. Takk også til deltakerne, som møtte opp klokka sju
-om morgenen gjennom to innlandsvintre.
+Dette arbeidet er utført ved Institutt for folkehelse- og
+idrettsvitenskap, Fakultet for helse- og sosialvitenskap, Universitetet i
+Innlandet, i perioden 2022–2026.
+
+Hovedveileder har vært professor Kari Nordmann, Universitetet i Innlandet, og
+biveileder førsteamanuensis Erik Hansen, Norges idrettshøgskole. Takk til begge
+for tålmodighet og for å ha lest flere utkast enn noen med rimelighet burde.
+Takk også til deltakerne, som møtte opp klokka sju om morgenen gjennom to
+innlandsvintre.
 
 Eventuelle gjenstående feil er mine egne.
 
