@@ -2,9 +2,10 @@
 
 <!--
 The `#inn-papers` div below produces one numbered separator sheet per entry in
-`thesis.papers` in _quarto.yml, as in the university's article-based template.
-The papers themselves are normally appended to the rendered PDF afterwards,
-in their published form, behind the matching separator sheet.
+`thesis.papers` in _quarto.yml, as in the university's article-based template:
+an otherwise empty page with the paper's number in a grey box in the right-hand
+margin, and no page number. The papers themselves are normally appended to the
+rendered PDF afterwards, in their published form, behind the matching sheet.
 -->
 
 The three papers that make up this dissertation follow, in the order in which

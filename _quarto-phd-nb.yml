@@ -20,7 +20,8 @@
 #      sammendrag på norsk og engelsk, forord, innholdsfortegnelse, liste over
 #      artikler;
 #    * en side «Liste over artikler» laget fra `thesis.papers`, og nummererte
-#      skilleark for artiklene bakerst;
+#      skilleark for artiklene bakerst (nummeret i en grå boks i høyremargen,
+#      uten sidetall);
 #    * universitetets sideoppsett: 2,5 cm marger, 11 pkt., halvannen
 #      linjeavstand, sidetall midtstilt nederst, kapitler som begynner på
 #      høyreside.
@@ -100,8 +101,9 @@ thesis:
 
   # ---- Artiklene som utgjør avhandlingen ------------------------------------
   # Hver oppføring blir ett punkt på siden «Liste over artikler» og ett
-  # skilleark bakerst. Universitetet krever at det opplyses om type manuskript
-  # og hvor og når artikkelen ev. er publisert - det er `status` og `journal`.
+  # skilleark bakerst (som bare viser nummeret). Universitetet krever at det
+  # opplyses om type manuskript og hvor og når artikkelen ev. er publisert -
+  # det er `status` og `journal`.
   # Bruk `citation:` i stedet for de enkelte feltene hvis du heller vil skrive
   # referansen ut selv.
   papers:

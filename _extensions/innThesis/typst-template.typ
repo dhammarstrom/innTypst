@@ -496,13 +496,45 @@
   }
 }
 
-// Separator sheets for the included articles, as in the university's
-// article-based template: one page per paper, opening on a recto, with a large
-// number (72 pt, regular weight, as in the template). The paper's reference is
-// printed underneath it.
-#let inn-paper-separator(mark, reference: none, open-right: true, accent: inn-green, weight: "regular") = {
+// The width of the margin on the right-hand side of the current page,
+// resolved from whatever `set page(margin: ...)` is in force. Used to let the
+// number box of a separator sheet run off the edge of the page.
+#let inn-right-margin() = {
+  let m = page.margin
+  let fallback = calc.min(page.width, page.height) * 2.5 / 21 // Typst's `auto`
+  let odd = calc.odd(here().page())
+  let v = if type(m) == dictionary {
+    if "right" in m {
+      m.right
+    } else if "outside" in m and odd {
+      m.outside
+    } else if "inside" in m and not odd {
+      m.inside
+    } else if "x" in m {
+      m.x
+    } else {
+      m.at("rest", default: auto)
+    }
+  } else {
+    m
+  }
+  if type(v) == length { v } else { fallback }
+}
+
+// The fill of the number box on a separator sheet: the grey of the
+// university's Word template (its "background 1, darker 15 %").
+#let inn-sheet-grey = rgb("#D9D9D9")
+
+// A separator sheet for one of the included articles, as in the university's
+// article-based template: an otherwise empty page, opening on a recto, with the
+// paper's number (72 pt) in a light-grey box at the top of the right-hand
+// margin. As in the template the box starts inside the text area and runs off
+// the edge of the page. The sheet carries no page number, and nothing but the
+// number: the paper itself, in its published form, follows it.
+#let inn-paper-separator(mark, open-right: true, accent: inn-green, weight: "regular") = {
   // The same markers a chapter opener leaves, so that an empty verso in front
-  // of the sheet is treated like one in front of a chapter.
+  // of the sheet is treated like one in front of a chapter, plus one of its
+  // own that keeps the folio off the sheet.
   [#metadata(none)<inn-flow-end>]
   if open-right {
     pagebreak(weak: true, to: "odd")
@@ -510,17 +542,41 @@
     pagebreak(weak: true)
   }
   [#metadata(none)<inn-opener>]
-  block(width: 100%, height: 100%)[
-    #set align(center)
-    #set par(justify: false)
-    #v(1fr)
-    #text(size: 72pt, weight: weight, fill: accent, mark)
-    #if reference != none {
-      v(10mm)
-      block(width: 80%, text(size: 11pt, reference))
-    }
-    #v(1.4fr)
-  ]
+  [#metadata(none)<inn-sheet>]
+  block(width: 100%, height: 100%, context {
+    // Measured on the template: the box reaches 2.3 cm into the text area
+    // and is 3.1 cm tall, with its top edge on the top margin.
+    let bleed = inn-right-margin()
+    place(
+      top + right,
+      dx: bleed,
+      block(
+        width: 2.3cm + bleed,
+        height: 3.1cm,
+        fill: inn-sheet-grey,
+        // The number is centred in the part of the box that is on the page.
+        inset: (right: bleed),
+        align(center + horizon, text(size: 72pt, weight: weight, fill: accent, mark)),
+      ),
+    )
+  })
+}
+
+// The page of the first separator sheet, or `none` when there are no papers.
+// Page numbering stops there: the papers that are inserted into the finished
+// PDF behind the sheets have a length the layout cannot know, so any folio
+// printed after them would be wrong. The university only requires the pages
+// up to and including the references to be numbered.
+#let inn-first-sheet-page() = {
+  let sheets = query(<inn-sheet>)
+  if sheets.len() == 0 { none } else { sheets.first().location().page() }
+}
+
+// Whether `page` lies on or behind the first separator sheet, i.e. in the
+// unnumbered part of the book.
+#let inn-is-unnumbered-page(page) = {
+  let first = inn-first-sheet-page()
+  first != none and page >= first
 }
 
 // One separator sheet per entry in `thesis.papers`. innThesis.lua emits this
@@ -535,7 +591,6 @@
     let mark = p.at("label", default: numbering("1", i + 1))
     inn-paper-separator(
       mark,
-      reference: inn-paper-reference(p),
       open-right: open-right,
       accent: cfg.accent,
       weight: weight,
@@ -865,13 +920,21 @@
 
   // ---- table of contents styling -------------------------------------------
   show outline.entry: it => {
+    // Entries for what lies behind the paper separator sheets (normally the
+    // appendices) are listed without a page number, since those pages carry
+    // none once the papers are inserted.
+    let entry = if inn-is-unnumbered-page(it.element.location().page()) {
+      link(it.element.location(), it.indented(it.prefix(), it.body()))
+    } else {
+      it
+    }
     // Chapter-level heading entries stand out; figure and table entries in the
     // lists of figures/tables keep the body weight.
     if it.level == 1 and it.element.func() == heading {
       v(0.7em, weak: true)
-      strong(it)
+      strong(entry)
     } else {
-      it
+      entry
     }
   }
 
@@ -910,6 +973,8 @@
   let page-footer = context {
     if page-number-position == "none" { return none }
     if inn-is-filler-page() { return none }
+    // No page number from the first paper separator sheet onward.
+    if inn-is-unnumbered-page(here().page()) { return none }
     // A PhD dissertation numbers its pages in the body font and colour, as
     // the templates' footer does; a master's thesis uses a smaller grey folio.
     let num = counter(page).display()

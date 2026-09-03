@@ -14,7 +14,8 @@
 #    * the front matter in the order the university asks for: summaries in
 #      both languages, preface, table of contents, list of papers;
 #    * a "List of Papers" page generated from `thesis.papers`, and numbered
-#      separator sheets for the papers at the back;
+#      separator sheets for the papers at the back (the number in a grey box
+#      in the right-hand margin, no page number);
 #    * the university's page layout: 2.5 cm margins, 11 pt, 1.5 line spacing,
 #      page number centred at the foot of the page, chapters opening on a
 #      right-hand page.
@@ -94,9 +95,9 @@ thesis:
 
   # ---- The papers that make up the dissertation ----------------------------
   # Each entry becomes one item on the "List of Papers" page and one
-  # separator sheet at the back. The university asks that the reader is told
-  # what kind of manuscript each paper is and where and when it was published
-  # - that is `status` and `journal`. Use `citation:` instead of the separate
+  # separator sheet at the back (which shows only the number). The university
+  # asks that the reader is told what kind of manuscript each paper is and
+  # where and when it was published - that is `status` and `journal`. Use `citation:` instead of the separate
   # fields if you would rather write the reference out yourself.
   papers:
     - label: "I"

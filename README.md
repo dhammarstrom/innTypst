@@ -184,8 +184,8 @@ and its Word title-page templates prescribe:
   and the ISBN/ISSN lines. The university asks that this page is never
   removed.
 * **Black throughout**, like the Word templates: headings, rules, links, the
-  page number and the paper separator sheets lose the green accent of the
-  master's format (`thesis.accent` brings it back or sets another colour).
+  page number and the numerals on the paper separator sheets lose the green
+  accent of the master's format (`thesis.accent` brings it back or sets another colour).
   Level-1 headings follow the templates' "Heading 1": 18 pt bold, the chapter
   number in a hanging indent, 18 pt of space above and below, no rule.
 * **Page layout**: 2.5 cm margins on all sides, page number centred at the
@@ -295,9 +295,10 @@ Use `citation: "..."` instead of the separate fields to write the reference out
 yourself.
 
 The same list produces the numbered **separator sheets** of the university's
-template — one right-hand page per paper with a large numeral and the
-reference — wherever you put an empty `#inn-papers` div. `papers/papers.qmd`
-holds it, after the references and before the appendices:
+template — one otherwise empty right-hand page per paper, with the paper's
+numeral in a grey box at the top of the right-hand margin, running off the edge
+of the page, and no page number — wherever you put an empty `#inn-papers` div.
+`papers/papers.qmd` holds it, after the references and before the appendices:
 
 ````markdown
 # Dissertation articles {.unnumbered}
@@ -307,7 +308,10 @@ holds it, after the references and before the appendices:
 ````
 
 The papers themselves are normally added to the finished PDF afterwards, in
-their published form, behind the matching separator sheet.
+their published form, behind the matching separator sheet. Since their length
+is unknown to the layout, page numbering stops at the first separator sheet:
+the sheets and everything behind them (normally the appendices) carry no page
+number, and the table of contents lists those parts without one.
 
 ### Submitting
 
@@ -315,7 +319,8 @@ The university wants one PDF in A4 with a meaningful file name
 (`book.output-file: "lastname_firstname_phd"`), five bound copies, and prints
 the dissertation at 17 × 24 cm — about 81 % of A4 — from the A4 file you
 deliver. Pages up to and including the references must be numbered; the
-papers and appendices need not be, and blank versos carry no page number.
+papers and appendices need not be (and in an article-based dissertation are
+not, see above), and blank versos carry no page number.
 
 ---
 
